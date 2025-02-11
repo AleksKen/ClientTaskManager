@@ -7,10 +7,11 @@ import Users from "./pages/Users.jsx";
 import {Toaster} from "sonner";
 import Sidebar from "./components/Sidebar.jsx";
 import Trash from "./pages/Trash.jsx";
+import Navbar from "./components/Navbar.jsx";
 
 function Layout() {
     // const {user} = useSelector((state) => state.auth);
-    const user = "Maria";
+    const user = JSON.parse('{ "name": "Maria Konyashova" }');
     const location = useLocation()
     return user ? (
         <div className='w-full h-screen flex flex-col md:flex-row'>
@@ -19,10 +20,10 @@ function Layout() {
             </div>
             {/*{MobileSidebar}*/}
             <div className="flex-1 overflow-y-auto">
-                {/*{Navbar}*/}
-            </div>
-            <div className='p-4 2xl:px-10'>
-                <Outlet/>
+                <Navbar/>
+                <div className='p-4 2xl:px-10'>
+                    <Outlet/>
+                </div>
             </div>
         </div>
     ) : (
