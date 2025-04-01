@@ -4,7 +4,7 @@ import { getInitials } from "../utils/initials.js";
 
 const UserInfo = ({ user }) => {
     return (
-        <div className="px-4">
+        <div className="px-0">
             <Popover className="relative">
                 {({ open }) => (
                     <>

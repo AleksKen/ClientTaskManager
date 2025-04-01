@@ -5,13 +5,13 @@ import {Menu} from "@headlessui/react";
 import {getInitials} from "../utils/initials.js";
 import {FaUser, FaUserLock} from "react-icons/fa";
 import {IoLogOutOutline} from "react-icons/io5";
+import {user} from "../assets/data.js";
 
 
 const UserAvatar = () => {
     const [open, setOpen] = useState(false);
     const [openPassword, setOpenPassword] = useState(false);
     // const {user} = useSelector((state) => state.auth);
-    const user = JSON.parse('{ "name": "Maria Konyashova" }');
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const logoutHandler = () => {

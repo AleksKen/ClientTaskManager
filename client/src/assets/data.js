@@ -524,18 +524,18 @@ export const summary = {
     users: [
         {
             _id: "65c5f27fb5204a81bde86833",
-            name: "Ева Полторак",
+            name: "Eva Poltorak",
             title: "Designer",
-            role: "ученица",
+            role: "student",
             isActive: true,
             createdAt: "2024-02-09T09:38:07.765Z",
         },
         {
             _id: "65c3176a0fd860f958baa099",
-            name: "Алтана Афанасьева",
+            name: "Altana Afanasyeva",
             title: "Data Analyst",
-            role: "ученица",
-            isActive: true,
+            role: "student",
+            isActive: false,
             createdAt: "2024-02-07T05:38:50.816Z",
         },
         {
@@ -1101,7 +1101,7 @@ export const tasks = [
 
 export const user = {
     _id: "662f32ffd1303cc",
-    name: "Codewave",
+    name: "Maria Konyashova",
     title: "Administrator",
     role: "Admin",
     email: "admin@mts.com",
