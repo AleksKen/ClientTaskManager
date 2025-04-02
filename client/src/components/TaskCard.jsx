@@ -11,9 +11,7 @@ import UserInfo from "./UserInfo.jsx";
 import {IoMdAdd} from "react-icons/io";
 
 const ICONS = {
-    high: <MdKeyboardDoubleArrowUp/>,
-    medium: <MdKeyboardArrowUp/>,
-    low: <MdKeyboardArrowDown/>,
+    high: <MdKeyboardDoubleArrowUp/>, medium: <MdKeyboardArrowUp/>, low: <MdKeyboardArrowDown/>,
 };
 
 const TaskCard = ({task}) => {
@@ -24,8 +22,8 @@ const TaskCard = ({task}) => {
 
         <div className="w-full h-fit bg-white shadow-md p-4 rounded">
             <div className='w-full flex justify-between'>
-                <div className={clsx("flex flex-1 gap-1 items-center text-sm font-medium",
-                    PRIOTITYSTYELS[task?.priority])}>
+                <div
+                    className={clsx("flex flex-1 gap-1 items-center text-sm font-medium", PRIOTITYSTYELS[task?.priority])}>
                     <span className="text-lg">{ICONS[task?.priority]}</span>
                     <span>{task?.priority} Priority</span>
                 </div>
@@ -39,8 +37,8 @@ const TaskCard = ({task}) => {
             </div>
 
             <span className='text-sm text-gray-600'>
-            {formatDate(new Date(task?.date))}
-          </span>
+                {formatDate(new Date(task?.date))}
+            </span>
 
             <div className="w-full border-t border-gray-200 my-2"/>
             <div className="flex items-center justify-between mb-2">
@@ -61,42 +59,35 @@ const TaskCard = ({task}) => {
 
                 <div className="py-2" style={{minWidth: "80px"}}>
                     <div className="relative h-7">
-                        {task?.team?.map((m, index) => (
-                            <div
+                        {task?.team?.map((m, index) => (<div
                                 key={index}
-                                className={clsx("w-7 h-7 rounded-full text-white flex " +
-                                    "items-center justify-center text-sm absolute", BGS[index % BGS?.length]
-                                )}
+                                className={clsx("w-7 h-7 rounded-full text-white flex " + "items-center justify-center text-sm absolute", BGS[index % BGS?.length])}
                                 style={{right: `${index === 0 ? 0 : index * 18}px`}}
                             >
                                 <UserInfo user={m}/>
-                            </div>
-                        ))}
+                            </div>))}
                     </div>
                 </div>
             </div>
 
             {/*sub tasks*/}
-            {task?.subTasks?.length > 0
-                ? (<div className="py-4 border-t border-gray-200">
-                    <h5 className="text-base line-clamp-1 text-black">
-                        {task?.subTasks[0].title}
-                    </h5>
-                    <div className="p-4 space-x-8">
-                        <span className="text-sm text-gray-600">
-                            {formatDate(new Date(task?.subTasks[0]?.date))}
-                        </span>
-                        <span className='bg-blue-600/10 px-3 py-1 rounded0full text-blue-700 font-medium'>
-                            {task?.subTasks[0]?.tag}
-                        </span>
-                    </div>
-                </div>)
-                : (<div className="py-4 border-t border-gray-200">
+            {task?.subTasks?.length > 0 ? (<div className="py-4 border-t border-gray-200">
+                <h5 className="text-base line-clamp-1 text-black">
+                    {task?.subTasks[0].title}
+                </h5>
+                <div className="p-2 flex gap-2 items-center">
+                    <span className="text-sm text-gray-600">
+                        {formatDate(new Date(task?.subTasks[0]?.date))}
+                    </span>
+                    <span className='bg-blue-600/10 px-3 py-1 rounded-full text-blue-700 font-medium'>
+                        {task?.subTasks[0]?.tag}
+                    </span>
+                </div>
+            </div>) : (<div className="py-4 border-t border-gray-200">
                     <span className="text-gray-500">
                         No Sub Task
                     </span>
-                </div>)
-            }
+            </div>)}
             <div className="w-full pb-2">
                 <button
                     disabled={user.isAdmin ? false : true}
