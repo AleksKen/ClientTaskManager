@@ -74,7 +74,7 @@ const NotificationPanel = () => {
                 <div className='w-8 h-8 flex items-center justify-center text-gray-800 relative'>
                     <IoIosNotificationsOutline className='text-2xl'/>
                     {data.length > 0 && (
-                        <span className='absolute text-center top-0 right-1 text-sm text-white
+                        <span className='absolute text-center top-0 right-1 text-xs text-white
                         font-semibold w-4 h-4 rounded-full bg-red-600'>
                             {data?.length}
                         </span>

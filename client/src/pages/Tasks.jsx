@@ -63,7 +63,7 @@ const Tasks = () => {
                 {
                     selected === 0
                         ? <BoardView tasks={tasks}/>
-                        : <div>
+                        : <div className="py-4">
                         <Table
                         tasks={tasks}
                         />

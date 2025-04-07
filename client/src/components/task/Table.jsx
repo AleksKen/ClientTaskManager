@@ -33,7 +33,7 @@ const Table = ({tasks}) => {
             <td className='py-2'>
                 <div className='flex items-center gap-2'>
                     <div
-                        className={clsx("w-4 h-4 rounded-full", TASK_TYPE[task?.stage])}
+                        className={clsx("w-4 h-4 rounded-full flex-shrink-0", TASK_TYPE[task?.stage])}
                     />
                     <p className='w-full line-clamp-2 text-base text-black'>
                         {task?.title}

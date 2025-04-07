@@ -1,6 +1,6 @@
 import Login from "./pages/Login.jsx";
 import {Navigate, Outlet, Route, Routes, useLocation} from "react-router-dom";
-import React, {Fragment, useRef, useState} from "react";
+import {Fragment, useRef} from "react";
 import Dashboard from "./pages/Dashboard.jsx";
 import Tasks from "./pages/Tasks.jsx";
 import Users from "./pages/Users.jsx";
@@ -20,7 +20,7 @@ function Layout() {
     // const {user} = useSelector((state) => state.auth);
     const location = useLocation()
     return user ? (
-        <div className='w-full h-screen flex flex-col md:flex-row'>
+        <div className='w-full h-full flex flex-col md:flex-row'>
             <div className='w-1/5 h-screen bg-white sticky top-0 hidden md:block'>
                 <Sidebar/>
             </div>
@@ -50,32 +50,38 @@ const MobileSidebar = () => {
                 show={isSidebarOpen}
                 as={Fragment}
                 enter='transition-opacity duration-700'
-                enterFrom= 'opacity-x-10'
+                enterFrom='opacity-x-10'
                 enterTo='opacity-x-100'
                 leave='transition-opacity duration-700'
                 leaveFrom='opacity-x-100'
                 leaveTo='opacity-x-0'
             >
-                {(ref) => (<div ref={(node) => (mobileMenuRef.current = node)}
-                className={clsx('md:hidden w-full h-full bg-black/40 transition-all duration-700 transform',
-                    isSidebarOpen ? 'translate-x-0' : 'translate-x-full'
-                )}
-                onClick={() => closeSidebar()}
-                >
-                    <div className='bg-white w-3/4 h-full'>
-                        <div className='w-full flex px-5 mt-5 justify-end'>
-                            <button
-                            onClick={() => closeSidebar()}
-                            className='flex items-end justify-end'
-                            >
-                                <IoClose size={25}/>
-                            </button>
-                        </div>
-                        <div className='-mt-10'>
+                {(ref) => (
+
+                    <div
+                        ref={(node) => (mobileMenuRef.current = node)}
+                        className={clsx(
+                            'fixed inset-0 z-50 md:hidden bg-black/40 transition-all duration-700 transform',
+                            isSidebarOpen ? 'translate-x-0' : 'translate-x-full'
+                        )}
+                        onClick={() => closeSidebar()}
+                    >
+                        <div
+                            className="bg-white w-3/4 h-full"
+                            onClick={(e) => e.stopPropagation()} // чтобы клик по самому сайдбару не закрывал его
+                        >
+                            <div className="w-full flex px-5 mt-5 justify-end">
+                                <button onClick={closeSidebar} className="flex items-end justify-end">
+                                    <IoClose size={25}/>
+                                </button>
+                            </div>
+                            <div className="-mt-10">
                                 <Sidebar/>
+                            </div>
                         </div>
                     </div>
-                </div>)}
+
+                )}
             </Transition>
         </>
     );
@@ -84,12 +90,15 @@ const MobileSidebar = () => {
 
 function App() {
     return (
-        <main className='w-full min-h-screen bg-[#f3f4f6]'>
+        <main className='w-full min-h-full bg-[#f3f4f6]'>
             <Routes>
                 <Route element={<Layout/>}>
                     <Route index path="/" element={<Navigate to="/dashboard"/>}/>
                     <Route path="/dashboard" element={<Dashboard/>}/>
                     <Route path="/tasks" element={<Tasks/>}/>
+                    <Route path='/completed/:status' element={<Tasks/>}/>
+                    <Route path='/in-progress/:status' element={<Tasks/>}/>
+                    <Route path='/todo/:status' element={<Tasks/>}/>
                     <Route path="/team" element={<Users/>}/>
                     <Route path="/trash" element={<Trash/>}/>
                     <Route path="/tasks/:taskId" element={<Tasks/>}/>
