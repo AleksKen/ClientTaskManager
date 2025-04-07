@@ -14,6 +14,7 @@ import {Transition} from "@headlessui/react";
 import clsx from "clsx";
 import {IoClose} from "react-icons/io5";
 import {user} from "./assets/data.js";
+import TaskDetails from "./pages/TaskDetails.jsx";
 
 
 function Layout() {
@@ -101,7 +102,7 @@ function App() {
                     <Route path='/todo/:status' element={<Tasks/>}/>
                     <Route path="/team" element={<Users/>}/>
                     <Route path="/trash" element={<Trash/>}/>
-                    <Route path="/tasks/:taskId" element={<Tasks/>}/>
+                    <Route path="/task/:id" element={<TaskDetails />} />
                 </Route>
                 <Route path="/login" element={<Login/>}/>
             </Routes>
