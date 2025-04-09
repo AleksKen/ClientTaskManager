@@ -4,13 +4,15 @@ import {useState} from "react";
 import {useParams} from "react-router-dom";
 import Loader from "../components/Loader.jsx";
 import Title from "../components/Title.jsx";
-import {Button} from "@headlessui/react";
+
 import {IoMdAdd} from "react-icons/io";
 import Tabs from "../components/Tabs.jsx";
 import TaskTitle from "../components/TaskTitle.jsx";
 import BoardView from "../components/BoardView.jsx";
 import {tasks} from "../assets/data.js";
 import Table from "../components/task/Table.jsx";
+import AddTask from "../components/task/AddTask.jsx";
+import Button from "../components/Button.jsx";
 
 const TABS = [
     {title: "Board View", icon: <MdGridView/>},
@@ -40,6 +42,7 @@ const Tasks = () => {
                 <Title title={status ? `${status} Tasks` : "Tasks"}/>
                 {
                     !status && (<Button
+                            onClick={() => setOpen(true)}
                             label="Create Task"
                             icon={<IoMdAdd className="text-lg"/>}
                             className="flex items-center gap-2 bg-blue-600 text-white rounded-md py-2 2xl:py-2.5 px-4"
@@ -71,6 +74,7 @@ const Tasks = () => {
                 }
             </Tabs>
 
+            <AddTask open={open} setOpen={setOpen}/>
         </div>
     );
 };
