@@ -6,7 +6,7 @@ import {formatDate} from "../../utils/dates.js";
 import {BiMessageAltDetail} from "react-icons/bi";
 import UserInfo from "../UserInfo.jsx";
 import {Button} from "@headlessui/react";
-import ConfirmationDialog from "../Dialogs.jsx";
+import {ConfirmationDialog} from "../Dialogs.jsx";
 import {useNavigate} from "react-router-dom";
 
 const ICONS = {

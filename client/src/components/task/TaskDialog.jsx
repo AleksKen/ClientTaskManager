@@ -6,7 +6,8 @@ import {Menu, Transition} from "@headlessui/react";
 import {BsThreeDots} from "react-icons/bs";
 import {RiDeleteBin6Line} from "react-icons/ri";
 import AddTask from "./AddTask.jsx";
-import ConfirmationDialog from "../Dialogs.jsx";
+import {ConfirmationDialog} from "../Dialogs.jsx";
+
 
 const TaskDialog = ({task}) => {
     const [open, setOpen] = useState(false);

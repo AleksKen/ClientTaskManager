@@ -5,12 +5,36 @@ import {IoMdAdd} from "react-icons/io";
 import {summary} from "../assets/data.js";
 import {getInitials} from "../utils/initials.js";
 import clsx from "clsx";
+import AddUser from "../components/AddUser.jsx";
+import {ConfirmationDialog, UserAction} from "../components/Dialogs.jsx";
+
+
 
 const Users = () => {
     const [openDialog, setOpenDialog] = useState(false);
     const [open, setOpen] = useState(false);
     const [openAction, setOpenAction] = useState(false);
     const [selected, setSelected] = useState(null);
+    const [isEditMode, setIsEditMode] = useState(false);
+
+
+    const userActionHandler = () => {};
+    const deleteHandler = () => {};
+
+    const deleteClick = (id) => {
+        setSelected(id);
+        setOpenDialog(true);
+    };
+
+    const editClick = (el) => {
+        setSelected(el);
+        setIsEditMode(true);
+        setOpen(true);
+    };
+
+    const userStatusClick = () => {
+        setOpenAction(true);
+    };
 
     const TableHeader = () => (
         <thead className='border-b border-gray-300'>
@@ -45,7 +69,7 @@ const Users = () => {
 
             <td>
                 <button
-                    // onClick={() => userStatusClick(user)}
+                    onClick={() => userStatusClick(user)}
                     className={clsx(
                         "w-fit px-4 py-1 rounded-full",
                         user?.isActive ? "bg-blue-200" : "bg-yellow-100"
@@ -59,48 +83,76 @@ const Users = () => {
                     className='text-blue-600 hover:text-blue-500 sm:px-0 text-sm md:text-base'
                     label='Edit'
                     type='button'
+                    onClick={() => editClick(user)}
                 >Edit</Button>
 
                 <Button
                     className='text-red-700 hover:text-red-500 sm:px-0 text-sm md:text-base'
                     label='Delete'
                     type='button'
+                    onClick={() => deleteClick(user?._id)}
                 >Delete</Button>
             </td>
         </tr>
     );
 
     return (
-        <div className='w-full md:px-1 px-0 mb-6'>
-            <div className='flex items-center justify-between mb-8'>
-                <Title title="Team Members"/>
-                <Button
-                    label="Create Task"
-                    icon={<IoMdAdd className="text-lg"/>}
-                    className="flex items-center gap-2 bg-blue-600 text-white rounded-md py-2 2xl:py-2.5 px-4"
-                >
-                    <IoMdAdd className="text-lg"/>
-                    <span>Add New User</span>
-                </Button>
-            </div>
+        <>
+            <div className='w-full md:px-1 px-0 mb-6'>
+                <div className='flex items-center justify-between mb-8'>
+                    <Title title="Team Members"/>
+                    <Button
+                        onClick={() => {
+                            setIsEditMode(false);
+                            setOpen(true);
+                        }}
+                        label="Add New User"
+                        icon={<IoMdAdd className="text-lg"/>}
+                        className="flex items-center gap-2 bg-blue-600 text-white rounded-md py-2 2xl:py-2.5 px-4"
+                    >
+                        <IoMdAdd className="text-lg"/>
+                        <span>Add New User</span>
+                    </Button>
+                </div>
 
-            <div className='py-4'>
+                <div className='py-4'>
 
-            </div>
+                </div>
 
-            <div className='bg-white px-2 md:px-4 py-4 shadow-md rounded'>
-                <div className='overflow-x-auto'>
-                    <table className='w-full mb-5'>
-                        <TableHeader/>
-                        <tbody>
-                        {summary.users?.map((user, index) => (
-                            <TableRow key={index} user={user}/>
-                        ))}
-                        </tbody>
-                    </table>
+                <div className='bg-white px-2 md:px-4 py-4 shadow-md rounded'>
+                    <div className='overflow-x-auto'>
+                        <table className='w-full mb-5'>
+                            <TableHeader/>
+                            <tbody>
+                            {summary.users?.map((user, index) => (
+                                <TableRow key={index} user={user}/>
+                            ))}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </div>
+
+            <AddUser
+                open={open}
+                setOpen={setOpen}
+                userData={selected}
+                isEditMode={isEditMode}
+                key={new Date().getTime().toString()}
+            />
+
+            <ConfirmationDialog
+                open={openDialog}
+                setOpen={setOpenDialog}
+                onClick={deleteHandler}
+            />
+
+            <UserAction
+                open={openAction}
+                setOpen={setOpenAction}
+                onClick={userActionHandler}
+            />
+        </>
     )
         ;
 };
