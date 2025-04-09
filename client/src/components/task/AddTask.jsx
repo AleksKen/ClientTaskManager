@@ -11,8 +11,7 @@ import Button from "../Button.jsx";
 const LISTS = ["TODO", "IN PROGRESS", "COMPLETED"];
 const PRIORITY = ["HIGH", "MEDIUM", "NORMAL", "LOW"];
 
-const AddTask = ({open, setOpen}) => {
-    const task = "";
+const AddTask = ({task, open, setOpen, label}) => {
 
     const {
         register,
@@ -22,7 +21,7 @@ const AddTask = ({open, setOpen}) => {
     } = useForm();
 
     const [team, setTeam] = useState(task?.team || []);
-    const [stage, setStage] = useState(task?.stage?.toUpperCase() || LISTS[0]);
+    const [stage, setStage] = useState(task?.stage?.toUpperCase() || label?.toUpperCase() || LISTS[0]);
     const [priority, setPriority] = useState(
         task?.priority?.toUpperCase() || PRIORITY[2]
     );
@@ -92,7 +91,6 @@ const AddTask = ({open, setOpen}) => {
                                 error={errors.date ? errors.date.message : ""}
                             />
                         </div>
-
                         <div className="w-full flex items-center justify-center mt-4">
                             <label
                                 className="flex items-center gap-1 text-base text-ascent-2 hover:text-ascent-1 cursor-pointer my-4"
@@ -128,7 +126,8 @@ const AddTask = ({open, setOpen}) => {
                         <Button
                             type="button"
                             className="bg-white px-5 text-sm font-semibold text-gray-900 sm:w-auto"
-                            onClick={() => {
+                            onClick={() =>
+                            {
                                 reset();
                                 setTeam([]);
                                 setStage(LISTS[0]);

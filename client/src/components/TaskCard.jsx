@@ -6,9 +6,7 @@ import TaskDialog from "./task/TaskDialog.jsx";
 import {formatDate} from "../utils/dates.js";
 import {user} from "../assets/data.js";
 import {BiMessageAltDetail} from "react-icons/bi";
-import {FaList} from "react-icons/fa";
 import UserInfo from "./UserInfo.jsx";
-import {IoMdAdd} from "react-icons/io";
 
 const ICONS = {
     high: <MdKeyboardDoubleArrowUp/>, medium: <MdKeyboardArrowUp/>, low: <MdKeyboardArrowDown/>,
@@ -21,7 +19,7 @@ const TaskCard = ({task}) => {
     return (
 
         <div className="w-full h-fit bg-white shadow-md p-4 rounded">
-            <div className='w-full flex justify-between'>
+            <div className="w-full flex justify-between">
                 <div
                     className={clsx("flex flex-1 gap-1 items-center text-sm font-medium", PRIOTITYSTYELS[task?.priority])}>
                     <span className="text-lg">{ICONS[task?.priority]}</span>
@@ -50,10 +48,6 @@ const TaskCard = ({task}) => {
                     <div className="flex gap-1 items-center text-sm text-gray-600">
                         <MdAttachFile/>
                         <span>{task?.assets?.length}</span>
-                    </div>
-                    <div className="flex gap-1 items-center text-sm text-gray-600">
-                        <FaList/>
-                        <span>0/{task?.subTasks?.length}</span>
                     </div>
                 </div>
 
@@ -88,20 +82,7 @@ const TaskCard = ({task}) => {
                         No Sub Task
                     </span>
             </div>)}
-            <div className="w-full pb-2">
-                <button
-                    disabled={user.isAdmin ? false : true}
-                    className="w-full flex gap-4 items-center text-sm text-gray-500 font-semibold
-                disabled:cursor-not-allowed disabled:text-gray-300"
-                >
-                    <IoMdAdd className="text-lg"/>
-                    <span>ADD SUBTASK</span>
-                </button>
-            </div>
         </div>
-
-        // <AddSubTask open={open} setOpen={setOpen} id={task._id}/>
-
     );
 };
 

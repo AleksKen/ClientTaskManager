@@ -3,7 +3,7 @@ import {
     MdKeyboardArrowUp,
     MdKeyboardDoubleArrowUp,
     MdOutlineDoneAll,
-    MdOutlineMessage, MdTaskAlt
+    MdOutlineMessage
 } from "react-icons/md";
 import {FaBug, FaTasks, FaThumbsUp, FaUser} from "react-icons/fa";
 import {RxActivityLog} from "react-icons/rx";
@@ -130,8 +130,8 @@ const TaskDetails = () => {
                                         <span className='text-gray-400'>|</span>
 
                                         <div className='space-x-2'>
-                                            <span className='font-semibold'>Sub-Task: </span>
-                                            <span>{task?.subTasks?.length}</span>
+                                            <span className='font-semibold'>Activities: </span>
+                                            <span>{task?.activities?.length}</span>
                                         </div>
                                     </div>
 
@@ -166,39 +166,6 @@ const TaskDetails = () => {
                                             }
                                         </div>
                                     </div>
-
-                                    <div className="space-y-4 py-6">
-                                        <p className='text-gray-500 font-semibold text-sm'>
-                                            SUB-TASKS
-                                        </p>
-                                        <div className="space-y-8">
-                                            {task?.subTasks?.map((el, index) => (
-                                                <div
-                                                    key={index}
-                                                    className="flex gap-3"
-                                                >
-                                                    <div
-                                                        className='w-10 h-10 flex items-center justify-center rounded-full bg-violet-50-200'>
-                                                        <MdTaskAlt className='text-violet-600' size={26}/>
-                                                    </div>
-                                                    <div className='space-y-1'>
-                                                        <div className='flex gap-2 items-center'>
-                                                        <span className='text-sm text-gray-500'>
-                                                          {new Date(el?.date).toDateString()}
-                                                        </span>
-
-                                                            <span
-                                                                className='px-2 py-0.5 text-center text-sm rounded-full bg-violet-100 text-violet-700 font-semibold'>
-                                                          {el?.tag}
-                                                        </span>
-                                                        </div>
-                                                        <p className='text-gray-700'>{el?.title}</p>
-                                                    </div>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-
                                 </div>
                                 <div className="w-full md:w-1/2 space-y-8">
                                     <p className="text-lg font-semibold">ASSETS</p>
@@ -228,7 +195,8 @@ const Activities = ({activity, id}) => {
     const [text, setText] = useState("");
     const isLoading = false;
 
-    const handleSubmit = async () => {};
+    const handleSubmit = async () => {
+    };
 
 
     const Card = ({item}) => {

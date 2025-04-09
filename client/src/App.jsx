@@ -6,7 +6,6 @@ import Tasks from "./pages/Tasks.jsx";
 import Users from "./pages/Users.jsx";
 import {Toaster} from "sonner";
 import Sidebar from "./components/Sidebar.jsx";
-import Trash from "./pages/Trash.jsx";
 import Navbar from "./components/Navbar.jsx";
 import {useDispatch, useSelector} from "react-redux";
 import {setOpenSidebar} from "./redux/slices/authSlice.js";
@@ -101,7 +100,6 @@ function App() {
                     <Route path='/in-progress/:status' element={<Tasks/>}/>
                     <Route path='/todo/:status' element={<Tasks/>}/>
                     <Route path="/team" element={<Users/>}/>
-                    <Route path="/trash" element={<Trash/>}/>
                     <Route path="/task/:id" element={<TaskDetails />} />
                 </Route>
                 <Route path="/login" element={<Login/>}/>
