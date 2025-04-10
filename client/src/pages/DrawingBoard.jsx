@@ -185,7 +185,7 @@ const DrawingBoard = () => {
                         disabled={history.length === 0}
                         className={`flex items-center gap-1 rounded-md py-1 px-2 md:py-2 md:px-4 text-sm md:text-base ${
                             history.length === 0
-                                ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                                ? "bg-gray-100 text-gray-600 border border-gray-300 cursor-not-allowed"
                                 : "bg-blue-100 text-blue-600 border border-blue-300"
                         }`}
                     >
