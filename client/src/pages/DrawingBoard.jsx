@@ -1,5 +1,5 @@
 import {useEffect, useRef, useState} from "react";
-import {IoMdAdd} from "react-icons/io";
+import {FaEraser} from "react-icons/fa";
 
 
 const DrawingBoard = () => {
@@ -8,6 +8,8 @@ const DrawingBoard = () => {
     const [isErasing, setIsErasing] = useState(false);
     const [lineWidth, setLineWidth] = useState(5);
     const [context, setContext] = useState(null);
+    const [strokeColor, setStrokeColor] = useState('#757575');
+
 
     const [canvasWidth, setCanvasWidth] = useState(200);
     const [canvasHeight, setCanvasHeight] = useState(200);
@@ -36,8 +38,9 @@ const DrawingBoard = () => {
         ctx.lineCap = "round";
         ctx.lineJoin = "round";
         ctx.lineWidth = lineWidth;
-        ctx.strokeStyle = '#000000';
-    }, [lineWidth]);
+        ctx.strokeStyle = strokeColor;
+
+    }, [lineWidth, strokeColor]);
 
     const startDrawing = (e) => {
         setIsDrawing(true);
@@ -106,17 +109,51 @@ const DrawingBoard = () => {
         setLineWidth(e.target.value);
     };
 
+    const handleColorChange = (e) => {
+        setStrokeColor(e.target.value);
+    };
+
     return (
         <div className="w-full md:px-4 px-0 mb-6">
-            <div className="flex items-center justify-between mb-8">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4">
                 <h1 className="text-2xl font-semibold text-gray-800">Drawing Board</h1>
-                <button
-                    onClick={toggleErase}
-                    className="flex items-center gap-2 bg-blue-600 text-white rounded-md py-2 px-4"
-                >
-                    <IoMdAdd className="text-lg"/>
-                    <span>{isErasing ? "Switch to Draw" : "Switch to Erase"}</span>
-                </button>
+
+                <div className="flex flex-wrap items-center gap-2 md:gap-4">
+                    <div className="flex items-center gap-2">
+                        <label htmlFor="line-width" className="text-gray-600 text-sm md:text-base">Line Width:</label>
+                        <input
+                            type="range"
+                            id="line-width"
+                            min="1"
+                            max="20"
+                            value={lineWidth}
+                            onChange={changeLineWidth}
+                            className="w-24 md:w-32"
+                        />
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                        <label htmlFor="stroke-color" className="text-gray-600 text-sm md:text-base">Color:</label>
+                        <input
+                            type="color"
+                            id="stroke-color"
+                            value={strokeColor}
+                            onChange={handleColorChange}
+                            className="w-6 h-6 md:w-8 md:h-8 p-0"
+                        />
+                    </div>
+
+                    <button
+                        onClick={toggleErase}
+                        className={`flex items-center gap-1 rounded-md py-1 px-2 md:py-2 md:px-4 text-sm md:text-base ${
+                            isErasing
+                                ? "bg-blue-100 text-blue-600 border border-blue-300"
+                                : "bg-gray-100 text-gray-600 border border-gray-300"
+                        }`}
+                    >
+                        <FaEraser className="text-base"/>
+                    </button>
+                </div>
             </div>
 
             <div className="py-4">
@@ -126,28 +163,13 @@ const DrawingBoard = () => {
                             ref={canvasRef}
                             width={canvasWidth}
                             height={canvasHeight}
-                            style={{ border: "1px solid #ddd" }}
+                            style={{border: "1px solid #ddd"}}
                             onMouseDown={startDrawing}
                             onMouseUp={stopDrawing}
                             onMouseMove={draw}
                             onTouchStart={startDrawingTouch}
                             onTouchEnd={stopDrawingTouch}
                             onTouchMove={drawTouch}
-                        />
-                    </div>
-                </div>
-
-                <div className="flex flex-col items-center mt-6">
-                    <div className="flex gap-4">
-                        <label htmlFor="line-width" className="text-gray-600">Line Width:</label>
-                        <input
-                            type="range"
-                            id="line-width"
-                            min="1"
-                            max="20"
-                            value={lineWidth}
-                            onChange={changeLineWidth}
-                            className="w-32"
                         />
                     </div>
                 </div>
