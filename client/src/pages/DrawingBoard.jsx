@@ -1,5 +1,6 @@
 import {useEffect, useRef, useState} from "react";
 import {FaEraser} from "react-icons/fa";
+import {FaArrowRotateLeft} from "react-icons/fa6";
 
 
 const DrawingBoard = () => {
@@ -8,9 +9,8 @@ const DrawingBoard = () => {
     const [isErasing, setIsErasing] = useState(false);
     const [lineWidth, setLineWidth] = useState(5);
     const [context, setContext] = useState(null);
+    const [history, setHistory] = useState([]);
     const [strokeColor, setStrokeColor] = useState('#757575');
-
-
     const [canvasWidth, setCanvasWidth] = useState(200);
     const [canvasHeight, setCanvasHeight] = useState(200);
 
@@ -43,6 +43,7 @@ const DrawingBoard = () => {
     }, [lineWidth, strokeColor]);
 
     const startDrawing = (e) => {
+        saveToHistory();
         setIsDrawing(true);
         draw(e);
     };
@@ -72,6 +73,7 @@ const DrawingBoard = () => {
     };
 
     const startDrawingTouch = (e) => {
+        saveToHistory();
         setIsDrawing(true);
         drawTouch(e);
     };
@@ -113,6 +115,30 @@ const DrawingBoard = () => {
         setStrokeColor(e.target.value);
     };
 
+    const saveToHistory = () => {
+        const canvas = canvasRef.current;
+        const dataUrl = canvas.toDataURL();
+        setHistory(prev => [...prev, dataUrl]);
+    };
+
+    const undo = () => {
+        if (history.length === 0) return;
+        const canvas = canvasRef.current;
+        const ctx = context;
+
+        const newHistory = [...history];
+        const lastState = newHistory.pop();
+        setHistory(newHistory);
+
+        const img = new Image();
+        img.src = lastState;
+        img.onload = () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        };
+    };
+
+
     return (
         <div className="w-full md:px-4 px-0 mb-6">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4">
@@ -153,6 +179,19 @@ const DrawingBoard = () => {
                     >
                         <FaEraser className="text-base"/>
                     </button>
+
+                    <button
+                        onClick={undo}
+                        disabled={history.length === 0}
+                        className={`flex items-center gap-1 rounded-md py-1 px-2 md:py-2 md:px-4 text-sm md:text-base ${
+                            history.length === 0
+                                ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                                : "bg-blue-100 text-blue-600 border border-blue-300"
+                        }`}
+                    >
+                        <FaArrowRotateLeft/>
+                    </button>
+
                 </div>
             </div>
 
@@ -163,7 +202,13 @@ const DrawingBoard = () => {
                             ref={canvasRef}
                             width={canvasWidth}
                             height={canvasHeight}
-                            style={{border: "1px solid #ddd"}}
+                            style={{
+                                border: "2px solid #ccc",
+                                borderRadius: "12px",
+                                boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
+                                transition: "box-shadow 0.3s ease",
+                                backgroundColor: "#fff",
+                            }}
                             onMouseDown={startDrawing}
                             onMouseUp={stopDrawing}
                             onMouseMove={draw}
