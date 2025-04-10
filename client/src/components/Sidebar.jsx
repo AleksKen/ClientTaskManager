@@ -1,10 +1,13 @@
-import {MdDashboard, MdOutlineAddTask, MdOutlinePendingActions, MdSettings, MdTaskAlt} from "react-icons/md";
+import {MdDashboard, MdOutlinePendingActions, MdTaskAlt} from "react-icons/md";
 import {FaTasks, FaUsers} from "react-icons/fa";
 import {useDispatch} from "react-redux";
 import {Link, useLocation} from "react-router-dom";
 import {setOpenSidebar} from "../redux/slices/authSlice.js";
 import clsx from "clsx";
 import {user} from "../assets/data.js";
+import {CgPen} from "react-icons/cg";
+import {HiOutlineRocketLaunch} from "react-icons/hi2";
+import {GiProgression} from "react-icons/gi";
 
 const Sidebar = () => {
     // const {user} = useSelector((state) => state.auth);
@@ -13,7 +16,7 @@ const Sidebar = () => {
 
     const path = location.pathname.split("/")[1];
 
-    const sidebarLinks = user.isAdmin ? linkData : linkData.slice(0, 5);
+    const sidebarLinks = user.isAdmin ? linkData : linkData.slice(0, 6);
 
     const closeSidebar = () => {
         dispatch(setOpenSidebar(false));
@@ -35,7 +38,7 @@ const Sidebar = () => {
     return <div className="w-full h-full flex flex-col gap-6 p-5">
         <h1 className="flex gap-1 items-center">
             <p className="bg-blue-600 p-2 rounded-full">
-                <MdOutlineAddTask className="text-white text-2xl font-black"/>
+                <HiOutlineRocketLaunch className="text-white text-2xl font-black"/>
             </p>
             <span className="text-black text-2xl font-black">MariaTask</span>
         </h1>
@@ -46,13 +49,6 @@ const Sidebar = () => {
                     <NavLink el={link} key={link.label}/>
                 ))
             }
-        </div>
-
-        <div>
-            <button className="w-full flex gap-1 p-2 items-center text-lg text-gray-800 ">
-                <MdSettings/>
-                <span>Settings</span>
-            </button>
         </div>
     </div>
 };
@@ -76,12 +72,17 @@ const linkData = [
     {
         label: "In Progress",
         link: "in-progress/in progress",
-        icon: <MdOutlinePendingActions/>,
+        icon: <GiProgression/>,
     },
     {
         label: "To Do",
         link: "todo/todo",
         icon: <MdOutlinePendingActions/>,
+    },
+    {
+        label: "Drawing Board",
+        link: "drawing",
+        icon: <CgPen/>,
     },
     {
         label: "Team",

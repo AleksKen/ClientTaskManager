@@ -10,7 +10,6 @@ import {ConfirmationDialog} from "../Dialogs.jsx";
 
 
 const TaskDialog = ({task}) => {
-    const [open, setOpen] = useState(false);
     const [openEdit, setOpenEdit] = useState(false);
     const [openDialog, setOpenDialog] = useState(false);
 
@@ -54,7 +53,7 @@ const TaskDialog = ({task}) => {
                         leaveTo="transform opacity-0 scale-95"
                     >
                         <Menu.Items
-                            className="absolute z-50 p-4 right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none">
+                            className="absolute z-50 p-1 right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none">
                             <div className="px-1 py-1 space-y-2">
                                 {items.map((el) => (
                                     <Menu.Item key={el.label}>
@@ -66,7 +65,7 @@ const TaskDialog = ({task}) => {
                                                 } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                                             >
                                                 {el.icon}
-                                                {el.label}
+                                                <span className="pl-2">{el.label}</span>
                                             </button>
                                         )}
                                     </Menu.Item>
@@ -85,7 +84,7 @@ const TaskDialog = ({task}) => {
                                                 className="mr-2 h-5 w-5 text-red-400"
                                                 aria-hidden="true"
                                             />
-                                            Delete
+                                            <span className="pl-2">Delete</span>
                                         </button>
                                     )}
                                 </Menu.Item>
