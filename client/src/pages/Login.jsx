@@ -1,27 +1,37 @@
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import {useForm} from "react-hook-form";
 import {useNavigate} from "react-router-dom";
 import Textbox from "../components/Textbox.jsx";
 import Button from "../components/Button.jsx";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {login} from "../redux/actions/UserAction.js";
 
 const Login = () => {
-    const {user} = useSelector((state) => state.auth);
+    const dispatch = useDispatch();
+    const { userInfo } = useSelector((state) => state.auth); // поправка под userInfo
+
     const {
         register,
         handleSubmit,
-        formState: {errors},
+        formState: { errors },
     } = useForm();
 
     const navigate = useNavigate();
 
     const submitHandler = async (data) => {
-        console.log("Submitting...");
+        try {
+            await dispatch(login(data)).unwrap();
+        } catch (err) {
+            console.error("Login failed:", err);
+            alert("Login failed: " + err);
+        }
     };
 
     useEffect(() => {
-        user && navigate("/dashboard");
-    }, [user])
+        if (userInfo) {
+            navigate("/dashboard");
+        }
+    }, [userInfo, navigate]);
 
     return (
         <div className='w-full min-h-screen flex items-center justify-center flex-col lg:flex-row bg-[#f3f4f6]'>

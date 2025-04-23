@@ -1,22 +1,21 @@
 import {MdDashboard, MdOutlinePendingActions, MdTaskAlt} from "react-icons/md";
 import {FaTasks, FaUsers} from "react-icons/fa";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {Link, useLocation} from "react-router-dom";
 import {setOpenSidebar} from "../redux/slices/authSlice.js";
 import clsx from "clsx";
-import {user} from "../assets/data.js";
 import {CgPen} from "react-icons/cg";
 import {HiOutlineRocketLaunch} from "react-icons/hi2";
 import {GiProgression} from "react-icons/gi";
 
 const Sidebar = () => {
-    // const {user} = useSelector((state) => state.auth);
+    const {userInfo} = useSelector((state) => state.auth);
     const dispatch = useDispatch();
     const location = useLocation();
 
     const path = location.pathname.split("/")[1];
 
-    const sidebarLinks = user.isAdmin ? linkData : linkData.slice(0, 6);
+    const sidebarLinks = userInfo.isAdmin ? linkData : linkData.slice(0, 6);
 
     const closeSidebar = () => {
         dispatch(setOpenSidebar(false));

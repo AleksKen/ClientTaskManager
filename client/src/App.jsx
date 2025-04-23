@@ -12,15 +12,14 @@ import {setOpenSidebar} from "./redux/slices/authSlice.js";
 import {Transition} from "@headlessui/react";
 import clsx from "clsx";
 import {IoClose} from "react-icons/io5";
-import {user} from "./assets/data.js";
 import TaskDetails from "./pages/TaskDetails.jsx";
 import DrawingBoard from "./pages/DrawingBoard.jsx";
 
 
 function Layout() {
-    // const {user} = useSelector((state) => state.auth);
+    const {userInfo} = useSelector((state) => state.auth);
     const location = useLocation()
-    return user ? (
+    return userInfo ? (
         <div className='w-full h-full flex flex-col md:flex-row'>
             <div className='w-1/5 h-screen bg-white sticky top-0 hidden md:block'>
                 <Sidebar/>

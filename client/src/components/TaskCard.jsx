@@ -4,16 +4,16 @@ import clsx from "clsx";
 import {BGS, PRIOTITYSTYELS, TASK_TYPE} from "../utils/consts.js";
 import TaskDialog from "./task/TaskDialog.jsx";
 import {formatDate} from "../utils/dates.js";
-import {user} from "../assets/data.js";
 import {BiMessageAltDetail} from "react-icons/bi";
 import UserInfo from "./UserInfo.jsx";
+import {useSelector} from "react-redux";
 
 const ICONS = {
     high: <MdKeyboardDoubleArrowUp/>, medium: <MdKeyboardArrowUp/>, low: <MdKeyboardArrowDown/>,
 };
 
 const TaskCard = ({task}) => {
-    // const {user} = useSelector((state) => state.auth);
+    const {userInfo} = useSelector((state) => state.auth);
     const [open, setOpen] = useState(false);
 
     return (
@@ -25,7 +25,7 @@ const TaskCard = ({task}) => {
                     <span className="text-lg">{ICONS[task?.priority]}</span>
                     <span>{task?.priority} Priority</span>
                 </div>
-                {user?.isAdmin && <TaskDialog task={task}/>}
+                {userInfo?.isAdmin && <TaskDialog task={task}/>}
             </div>
 
 

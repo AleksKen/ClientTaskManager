@@ -5,13 +5,11 @@ import {Menu} from "@headlessui/react";
 import {getInitials} from "../utils/initials.js";
 import {FaUser, FaUserLock} from "react-icons/fa";
 import {IoLogOutOutline} from "react-icons/io5";
-import {user} from "../assets/data.js";
-
 
 const UserAvatar = () => {
     const [open, setOpen] = useState(false);
     const [openPassword, setOpenPassword] = useState(false);
-    // const {user} = useSelector((state) => state.auth);
+    const {userInfo} = useSelector((state) => state.auth);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const logoutHandler = () => {
@@ -22,7 +20,7 @@ const UserAvatar = () => {
             <div>
                 <Menu.Button className='w-10 h-10 2xl:h-12 items-center justify-center rounded-full bg-blue-600'>
                     <span className='text-white font-semibold'>
-                        {getInitials(user?.name)}
+                        {getInitials(userInfo?.firstName + " " + userInfo?.lastName)}
                     </span>
                 </Menu.Button>
             </div>
