@@ -10,7 +10,6 @@ import {RxActivityLog} from "react-icons/rx";
 import {GrInProgress} from "react-icons/gr";
 import {useParams} from "react-router-dom";
 import {useState} from "react";
-import {tasks} from "../assets/data.js";
 import Tabs from "../components/Tabs.jsx";
 import {PRIOTITYSTYELS, TASK_TYPE} from "../utils/consts.js";
 import clsx from "clsx";
@@ -18,6 +17,7 @@ import {getInitials} from "../utils/initials.js";
 import moment from "moment";
 import Loader from "../components/Loader.jsx";
 import Button from "../components/Button.jsx";
+import {useGetTasksQuery} from "../redux/slices/apiSlice.js";
 
 const ICONS = {
     high: <MdKeyboardDoubleArrowUp/>,
@@ -78,11 +78,11 @@ const act_types = [
     "Assigned",
 ];
 
-
 const TaskDetails = () => {
     const {id} = useParams();
     const [selected, setSelected] = useState(0);
-    const task = tasks.find((task) => task._id === id);
+    const { data: tasks, isLoading, error } = useGetTasksQuery();
+    const task = tasks.find((task) => task.id === id);
     return (
         <div className="w-full flex flex-col gap-3 mb-4 overflow-y-hidden">
             <h1 className="text-2xl text-gray-600 font-bold">
