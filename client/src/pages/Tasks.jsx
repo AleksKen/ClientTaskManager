@@ -31,6 +31,10 @@ const Tasks = () => {
     const [open, setOpen] = useState(false);
     const status = params?.status || "";
     const { data: tasks, isLoading, error } = useGetTasksQuery();
+    const filteredTasks = status
+        ? tasks?.filter((task) => task.stage?.toLowerCase() === status.toLowerCase())
+        : tasks;
+
 
     return isLoading ? (
         <div className="py-10">
@@ -74,10 +78,10 @@ const Tasks = () => {
 
                 {
                     selected === 0
-                        ? <BoardView tasks={tasks}/>
+                        ? <BoardView tasks={filteredTasks}/>
                         : <div className="py-4">
                         <Table
-                        tasks={tasks}
+                        tasks={filteredTasks}
                         />
                         </div>
                 }

@@ -34,8 +34,8 @@ const TaskCard = ({task}) => {
                 <h4 className="text-line-clamp-1">{task?.title}</h4>
             </div>
 
-            <span className='text-sm text-gray-600'>
-                {formatDate(new Date(task?.deadline))}
+            <span className='text-sm text-red-400'>
+                {"Deadline: " +formatDate(new Date(task?.deadline))}
             </span>
 
             <div className="w-full border-t border-gray-200 my-2"/>
@@ -54,35 +54,39 @@ const TaskCard = ({task}) => {
                 <div className="py-2" style={{minWidth: "80px"}}>
                     <div className="relative h-7">
                         {task?.team?.map((m, index) => (<div
-                                key={index}
-                                className={clsx("w-7 h-7 rounded-full text-white flex " +
-                                    "items-center justify-center text-sm absolute", BGS[index % BGS?.length])}
-                                style={{right: `${index === 0 ? 0 : index * 18}px`}}
-                            >
-                                <UserInfo user={m}/>
-                            </div>))}
+                            key={index}
+                            className={clsx("w-7 h-7 rounded-full text-white flex " +
+                                "items-center justify-center text-sm absolute", BGS[index % BGS?.length])}
+                            style={{right: `${index === 0 ? 0 : index * 18}px`}}
+                        >
+                            <UserInfo user={m}/>
+                        </div>))}
                     </div>
                 </div>
             </div>
 
-            {/*sub tasks*/}
-            {task?.subTasks?.length > 0 ? (<div className="py-4 border-t border-gray-200">
-                <h5 className="text-base line-clamp-1 text-black">
-                    {task?.subTasks[0].title}
-                </h5>
-                <div className="p-2 flex gap-2 items-center">
+            {/*description*/}
+            <div className="py-4 border-t border-gray-200">
+                {task?.description ? (
+                    <h5 className="text-base text-black">
+                        {task.description}
+                    </h5>
+                ) : (
+                    <span className="text-gray-500">No Description</span>
+                )}
+
+                <div className="p-2 flex gap-2 items-center mt-2">
                     <span className="text-sm text-gray-600">
-                        {formatDate(new Date(task?.subTasks[0]?.createdAt))}
+                        {"Created At: " + formatDate(new Date(task?.createdAt))}
                     </span>
-                    <span className='bg-blue-600/10 px-3 py-1 rounded-full text-blue-700 font-medium'>
-                        {task?.subTasks[0]?.tag}
-                    </span>
+                    {task?.label && (
+                        <span className="bg-blue-600/10 px-3 py-1 rounded-full text-blue-700 font-medium">
+                    {task.label}
+                </span>
+                    )}
                 </div>
-            </div>) : (<div className="py-4 border-t border-gray-200">
-                    <span className="text-gray-500">
-                        No Sub Task
-                    </span>
-            </div>)}
+            </div>
+
         </div>
     );
 };

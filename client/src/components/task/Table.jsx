@@ -65,7 +65,7 @@ const Table = ({tasks}) => {
 
             <td className="py-2">
                 <span className="text-sm text-gray-600">
-                    {formatDate(new Date(task?.deadline))}
+                    {formatDate(new Date(task?.createdAt))}
                 </span>
             </td>
 

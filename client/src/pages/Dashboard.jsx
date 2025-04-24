@@ -113,7 +113,7 @@ const UserTable = ({users}) => {
                     </div>
 
                     <div>
-                        <p> {user.name}</p>
+                        <p> {user?.firstName + " " + user?.lastName}</p>
                         <span className='text-xs text-black'>{user?.role}</span>
                     </div>
                 </div>
@@ -188,6 +188,13 @@ const Dashboard = () => {
     const { data: users } = useGetUsersQuery();
     const { data: tasks } = useGetTasksQuery();
 
+    const latest10Tasks = tasks
+        ? [...tasks]
+            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+            .slice(0, 10)
+        : [];
+
+
     const Card = ({label, count, bg, icon}) => {
         return (
             <div className="w-full h-32 bg-white p-5 shadow-md rounded-md flex items-center justify-between">
@@ -226,7 +233,7 @@ const Dashboard = () => {
 
         <div className="w-full flex flex-col md:flex-row gap-4 2xl:gap-10 py-8">
             {/*/left*/}
-            <TaskTable tasks={tasks}/>
+            <TaskTable tasks={latest10Tasks}/>
             {/*/right*/}
             <UserTable users={users}/>
         </div>
