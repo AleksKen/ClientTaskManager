@@ -65,7 +65,7 @@ const Table = ({tasks}) => {
 
             <td className="py-2">
                 <span className="text-sm text-gray-600">
-                    {formatDate(new Date(task?.date))}
+                    {formatDate(new Date(task?.deadline))}
                 </span>
             </td>
 
@@ -101,7 +101,7 @@ const Table = ({tasks}) => {
 
             <td className="py-2 flex gap-2 md:gap-4 justify-end">
                 <Button
-                    onClick={() => {navigate(`/task/${task._id}`)}}
+                    onClick={() => {navigate(`/task/${task.id}`)}}
                     className="text-blue-600 hover:text-blue-500 sm:px-0 text-sm md:text-base"
                     label="Open"
                     type="button"

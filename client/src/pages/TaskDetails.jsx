@@ -17,7 +17,7 @@ import {getInitials} from "../utils/initials.js";
 import moment from "moment";
 import Loader from "../components/Loader.jsx";
 import Button from "../components/Button.jsx";
-import {useGetTasksQuery} from "../redux/slices/apiSlice.js";
+import {useGetTaskQuery} from "../redux/slices/apiSlice.js";
 
 const ICONS = {
     high: <MdKeyboardDoubleArrowUp/>,
@@ -81,8 +81,8 @@ const act_types = [
 const TaskDetails = () => {
     const {id} = useParams();
     const [selected, setSelected] = useState(0);
-    const { data: tasks, isLoading, error } = useGetTasksQuery();
-    const task = tasks.find((task) => task.id === id);
+    const { data: task, isLoading, error } = useGetTaskQuery(id);
+
     return (
         <div className="w-full flex flex-col gap-3 mb-4 overflow-y-hidden">
             <h1 className="text-2xl text-gray-600 font-bold">
@@ -111,7 +111,7 @@ const TaskDetails = () => {
                                             <div
                                                 className={clsx(
                                                     "w-4 h-4 rounded-full",
-                                                    TASK_TYPE[task.stage]
+                                                    TASK_TYPE[task?.stage]
                                                 )}
                                             />
                                             <span className='text-black uppercase'>{task?.stage}</span>
@@ -119,7 +119,7 @@ const TaskDetails = () => {
                                     </div>
 
                                     <p className='text-gray-500'>
-                                        Created At: {new Date(task?.date).toDateString()}
+                                        Created At: {new Date(task?.createdAt).toDateString()}
                                     </p>
                                     <div className='flex items-center gap-8 p-4 border-y border-gray-200'>
                                         <div className='space-x-2'>
@@ -152,7 +152,7 @@ const TaskDetails = () => {
                                                             }
                                                         >
                                                         <span className='text-center'>
-                                                            {getInitials(m?.name)}
+                                                            {getInitials(m?.firstName + " " + m?.lastName)}
                                                         </span>
                                                         </div>
 

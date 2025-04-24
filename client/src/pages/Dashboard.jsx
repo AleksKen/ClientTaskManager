@@ -67,7 +67,7 @@ const TaskTable = ({tasks}) => {
             </td>
             <td className='py-2 hidden md:block'>
         <span className='text-base text-gray-600'>
-          {moment(task?.date).fromNow()}
+          {moment(task?.createdAt).fromNow()}
         </span>
             </td>
         </tr>

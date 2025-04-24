@@ -35,7 +35,7 @@ const TaskCard = ({task}) => {
             </div>
 
             <span className='text-sm text-gray-600'>
-                {formatDate(new Date(task?.date))}
+                {formatDate(new Date(task?.deadline))}
             </span>
 
             <div className="w-full border-t border-gray-200 my-2"/>
@@ -55,7 +55,8 @@ const TaskCard = ({task}) => {
                     <div className="relative h-7">
                         {task?.team?.map((m, index) => (<div
                                 key={index}
-                                className={clsx("w-7 h-7 rounded-full text-white flex " + "items-center justify-center text-sm absolute", BGS[index % BGS?.length])}
+                                className={clsx("w-7 h-7 rounded-full text-white flex " +
+                                    "items-center justify-center text-sm absolute", BGS[index % BGS?.length])}
                                 style={{right: `${index === 0 ? 0 : index * 18}px`}}
                             >
                                 <UserInfo user={m}/>
@@ -71,7 +72,7 @@ const TaskCard = ({task}) => {
                 </h5>
                 <div className="p-2 flex gap-2 items-center">
                     <span className="text-sm text-gray-600">
-                        {formatDate(new Date(task?.subTasks[0]?.date))}
+                        {formatDate(new Date(task?.subTasks[0]?.createdAt))}
                     </span>
                     <span className='bg-blue-600/10 px-3 py-1 rounded-full text-blue-700 font-medium'>
                         {task?.subTasks[0]?.tag}

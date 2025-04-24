@@ -22,7 +22,14 @@ export const apiSlice = createApi({
             query: () => '/tasks',
             providesTags: ['Task'],
         }),
+
+
+
+        getTask: builder.query({
+            query: (id) => `/tasks/${id}`,
+            providesTags: (result, error, id) => [{ type: 'Task', id }],
+        }),
     }),
 });
 
-export const { useGetTasksQuery } = apiSlice;
+export const { useGetTasksQuery, useGetTaskQuery } = apiSlice;
