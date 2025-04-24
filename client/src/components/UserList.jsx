@@ -1,41 +1,44 @@
-import {summary} from "../assets/data.js";
 import {Fragment, useEffect, useState} from "react";
 import {Listbox, Transition} from "@headlessui/react";
 import {BsChevronExpand} from "react-icons/bs";
 import clsx from "clsx";
 import {getInitials} from "../utils/initials.js";
 import {MdCheck} from "react-icons/md";
+import {useGetUsersQuery} from "../redux/slices/apiSlice.js";
 
 const UserList = ({team, setTeam}) => {
-    const data = summary.users;
     const [selectedUsers, setSelectedUsers] = useState([]);
+    const { data: users } = useGetUsersQuery();
 
     const handleChange = (e) => {
-        setSelectedUsers(e)
-        setTeam(e?.map((user) => user._id));
+        setSelectedUsers(e);
+        setTeam(e);
     };
 
     useEffect(() => {
-        if (team?.length < 1) {
-            data && setSelectedUsers([data[0]]);
-        } else {
-            setSelectedUsers(team);
+        if (users) {
+            if (team?.length < 1) {
+                setSelectedUsers([users[0]]);
+                setTeam([users[0]]);
+            } else {
+                setSelectedUsers(team);
+            }
         }
-    }, []);
+    }, [users]);
 
     return (
         <div>
             <p className="text-gray-700">Assign Task To: </p>
             <Listbox
                 value={selectedUsers}
-                onChange={(e) => handleChange(e)}
+                onChange={handleChange}
                 multiple
             >
                 <div className="relative mt-1">
                     <Listbox.Button
                         className="relative w-full cursor-default rounded bg-white pl-3 pr-10 text-left px-3 py-2.5 2xl:py-3 border border-gray-300 sm:text-sm">
                         <span className="block truncate">
-                          {selectedUsers?.map((user) => user.name).join(", ")}
+                          {selectedUsers?.map((user) => user?.firstName + " " + user?.lastName).join(", ")}
                         </span>
 
                         <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
@@ -55,7 +58,7 @@ const UserList = ({team, setTeam}) => {
 
                         <Listbox.Options
                             className="z-50 absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
-                            {data?.map((user, index) => (
+                            {users?.map((user, index) => (
                                 <Listbox.Option
                                     key={index}
                                     className={({active}) =>
@@ -76,10 +79,10 @@ const UserList = ({team, setTeam}) => {
                                                 <div
                                                     className="w-6 h-6 rounded-full text-white flex items-center justify-center bg-violet-600">
                           <span className="text-center text-[10px]">
-                            {getInitials(user.name)}
+                            {getInitials(user?.firstName, user?.lastName)}
                           </span>
                                                 </div>
-                                                <span>{user.name}</span>
+                                                <span>{user?.firstName + " " + user?.lastName}</span>
                                             </div>
                                             {selected ? (
                                                 <span
@@ -98,5 +101,6 @@ const UserList = ({team, setTeam}) => {
         </div>
     );
 };
+
 
 export default UserList;

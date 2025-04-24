@@ -20,7 +20,7 @@ const UserAvatar = () => {
             <div>
                 <Menu.Button className='flex w-12 h-12 2xl:h-12 items-center justify-center rounded-full bg-blue-600'>
                     <span className='text-white font-semibold'>
-                        {getInitials(userInfo?.firstName + " " + userInfo?.lastName)}
+                        {getInitials(userInfo?.firstName, userInfo?.lastName)}
                     </span>
                 </Menu.Button>
             </div>

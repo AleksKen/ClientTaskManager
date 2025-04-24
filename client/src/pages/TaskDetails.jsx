@@ -152,7 +152,7 @@ const TaskDetails = () => {
                                                             }
                                                         >
                                                         <span className='text-center'>
-                                                            {getInitials(m?.firstName + " " + m?.lastName)}
+                                                            {getInitials(m?.firstName, m?.lastName)}
                                                         </span>
                                                         </div>
 

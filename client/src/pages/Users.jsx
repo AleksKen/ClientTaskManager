@@ -2,11 +2,11 @@ import {useState} from "react";
 import Title from "../components/Title.jsx";
 import {Button} from "@headlessui/react";
 import {IoMdAdd} from "react-icons/io";
-import {summary} from "../assets/data.js";
 import {getInitials} from "../utils/initials.js";
 import clsx from "clsx";
 import AddUser from "../components/AddUser.jsx";
 import {ConfirmationDialog, UserAction} from "../components/Dialogs.jsx";
+import {useGetUsersQuery} from "../redux/slices/apiSlice.js";
 
 
 
@@ -20,6 +20,7 @@ const Users = () => {
 
     const userActionHandler = () => {};
     const deleteHandler = () => {};
+    const { data: users } = useGetUsersQuery();
 
     const deleteClick = (id) => {
         setSelected(id);
@@ -56,10 +57,10 @@ const Users = () => {
                     <div
                         className='w-9 h-9 rounded-full text-white flex items-center justify-center text-sm bg-blue-700 flex-shrink-0'>
             <span className='text-xs md:text-sm text-center'>
-              {getInitials(user.name)}
+              {getInitials(user?.firstName, user?.lastName)}
             </span>
                     </div>
-                    {user.name}
+                    {user?.firstName + " " + user?.lastName}
                 </div>
             </td>
 
@@ -90,7 +91,7 @@ const Users = () => {
                     className='text-red-700 hover:text-red-500 sm:px-0 text-sm md:text-base'
                     label='Delete'
                     type='button'
-                    onClick={() => deleteClick(user?._id)}
+                    onClick={() => deleteClick(user?.id)}
                 >Delete</Button>
             </td>
         </tr>
@@ -124,7 +125,7 @@ const Users = () => {
                         <table className='w-full mb-5'>
                             <TableHeader/>
                             <tbody>
-                            {summary.users?.map((user, index) => (
+                            {users?.map((user, index) => (
                                 <TableRow key={index} user={user}/>
                             ))}
                             </tbody>

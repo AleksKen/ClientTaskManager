@@ -7,6 +7,7 @@ import UserList from "../UserList.jsx";
 import SelectList from "../SelectList.jsx";
 import {BiImages} from "react-icons/bi";
 import Button from "../Button.jsx";
+import {useCreateTaskMutation} from "../../redux/slices/apiSlice.js";
 
 const LISTS = ["TODO", "IN PROGRESS", "COMPLETED"];
 const PRIORITY = ["HIGH", "MEDIUM", "NORMAL", "LOW"];
@@ -28,9 +29,34 @@ const AddTask = ({task, open, setOpen, label}) => {
     const [assets, setAssets] = useState([]);
     const [uploading, setUploading] = useState(false);
 
-    const submitHandler = () => {
-    };
+    const [createTask, { isLoading, error }] = useCreateTaskMutation();
 
+    const submitHandler = async (data) => {
+        const newTask = {
+            title: data.title,
+            description: data.description || undefined,
+            deadline: new Date(data.date).toISOString(),
+            priority: priority.toString().toLowerCase(),
+            stage: stage.toString().toLowerCase(),
+            teamIds: team.map(user => user.id),
+            taskLabelIds: undefined,
+            assets: undefined,
+        };
+
+        console.log("Task data to be sent:", newTask);
+
+        try {
+            await createTask(newTask).unwrap();
+            reset();
+            setTeam([]);
+            setStage(LISTS[0]);
+            setPriority(PRIORITY[2]);
+            setAssets([]);
+            setOpen(false);
+        } catch (err) {
+            console.error('Failed to create task:', err);
+        }
+    };
     const handleSelect = (e) => {
         setAssets(e.target.files);
     };
@@ -54,6 +80,16 @@ const AddTask = ({task, open, setOpen, label}) => {
                         className="w-full rounded"
                         register={register("title", {required: "Title is required"})}
                         error={errors.title ? errors.title.message : ""}
+                    />
+
+                    <Textbox
+                        placeholder="Description"
+                        type="text"
+                        name="description"
+                        label="Task Description"
+                        className="w-full rounded"
+                        register={register("description")}
+                        error=""
                     />
 
                     <UserList
@@ -130,7 +166,7 @@ const AddTask = ({task, open, setOpen, label}) => {
                             {
                                 reset();
                                 setTeam([]);
-                                setStage(LISTS[0]);
+                                setStage(label?.toUpperCase() || LISTS[0]);
                                 setPriority(PRIORITY[2]);
                                 setAssets([]);
                                 setOpen(false);

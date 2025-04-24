@@ -1,5 +1,5 @@
-export function getInitials(fullName) {
-    const names = fullName.split(' ');
-    const initials = names.slice(0, 2).map(name => name[0].toUpperCase());
-    return initials.join('');
+export function getInitials(firstName, lastName) {
+    if (!firstName || !lastName) return '';
+    const initials = [firstName[0], lastName[0]];
+    return initials.map(initial => initial.toUpperCase()).join('');
 }

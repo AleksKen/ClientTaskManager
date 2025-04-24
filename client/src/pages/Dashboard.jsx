@@ -9,6 +9,7 @@ import {BGS, PRIOTITYSTYELS, TASK_TYPE} from "../utils/consts.js";
 import UserInfo from "../components/UserInfo.jsx";
 import moment from "moment";
 import {getInitials} from "../utils/initials.js";
+import {useGetTasksQuery, useGetUsersQuery} from "../redux/slices/apiSlice.js";
 
 const TaskTable = ({tasks}) => {
     const ICONS = {
@@ -108,7 +109,7 @@ const UserTable = ({users}) => {
                 <div className='flex items-center gap-3'>
                     <div
                         className='w-9 h-9 rounded-full text-white flex items-center justify-center text-sm bg-violet-700'>
-                        <span className='text-center'>{getInitials(user?.name)}</span>
+                        <span className='text-center'>{getInitials(user?.firstName, user?.lastName)}</span>
                     </div>
 
                     <div>
@@ -184,6 +185,9 @@ const Dashboard = () => {
         },
     ]
 
+    const { data: users } = useGetUsersQuery();
+    const { data: tasks } = useGetTasksQuery();
+
     const Card = ({label, count, bg, icon}) => {
         return (
             <div className="w-full h-32 bg-white p-5 shadow-md rounded-md flex items-center justify-between">
@@ -222,9 +226,9 @@ const Dashboard = () => {
 
         <div className="w-full flex flex-col md:flex-row gap-4 2xl:gap-10 py-8">
             {/*/left*/}
-            <TaskTable tasks={summary.last10Task}/>
+            <TaskTable tasks={tasks}/>
             {/*/right*/}
-            <UserTable users={summary.users}/>
+            <UserTable users={users}/>
         </div>
     </div>;
 };
