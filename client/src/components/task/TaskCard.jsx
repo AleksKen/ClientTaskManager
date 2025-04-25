@@ -1,11 +1,11 @@
 import {MdAttachFile, MdKeyboardArrowDown, MdKeyboardArrowUp, MdKeyboardDoubleArrowUp} from "react-icons/md";
 import {useState} from "react";
 import clsx from "clsx";
-import {BGS, PRIOTITYSTYELS, TASK_TYPE} from "../utils/consts.js";
-import TaskDialog from "./task/TaskDialog.jsx";
-import {formatDate} from "../utils/dates.js";
+import {BGS, PRIOTITYSTYELS, TASK_TYPE} from "../../utils/consts.js";
+import TaskDialog from "./TaskDialog.jsx";
+import {formatDate} from "../../utils/dates.js";
 import {BiMessageAltDetail} from "react-icons/bi";
-import UserInfo from "./UserInfo.jsx";
+import UserInfo from "../user/UserInfo.jsx";
 
 const ICONS = {
     high: <MdKeyboardDoubleArrowUp/>, medium: <MdKeyboardArrowUp/>, low: <MdKeyboardArrowDown/>,

@@ -7,7 +7,7 @@ import Title from "../components/Title.jsx";
 
 import {IoMdAdd} from "react-icons/io";
 import Tabs from "../components/Tabs.jsx";
-import TaskTitle from "../components/TaskTitle.jsx";
+import TaskTitle from "../components/task/TaskTitle.jsx";
 import BoardView from "../components/BoardView.jsx";
 import Table from "../components/task/Table.jsx";
 import AddTask from "../components/task/AddTask.jsx";

@@ -1,10 +1,10 @@
 import {useForm} from "react-hook-form";
-import ModalWrapper from "./ModalWrapper.jsx";
-import Textbox from "./Textbox.jsx";
+import ModalWrapper from "../ModalWrapper.jsx";
+import Textbox from "../Textbox.jsx";
 import {Dialog} from "@headlessui/react";
-import Loader from "./Loader.jsx";
-import Button from "./Button.jsx";
-import {useCreateUserMutation, useUpdateUserMutation} from "../redux/slices/apiSlice.js";
+import Loader from "../Loader.jsx";
+import Button from "../Button.jsx";
+import {useCreateUserMutation, useUpdateUserMutation} from "../../redux/slices/apiSlice.js";
 import {useEffect} from "react";
 
 

@@ -1,7 +1,7 @@
 import {useDispatch, useSelector} from "react-redux";
 import {setOpenSidebar} from "../redux/slices/authSlice.js";
 import {MdOutlineSearch} from "react-icons/md";
-import UserAvatar from "./UserAvatar.jsx";
+import UserAvatar from "./user/UserAvatar.jsx";
 import NotificationPanel from "./NotificationPanel.jsx";
 
 const Navbar = () => {

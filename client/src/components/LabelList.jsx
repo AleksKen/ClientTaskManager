@@ -27,7 +27,7 @@ const LabelList = ({taskLabels, setTaskLabels}) => {
 
     return (
         <div>
-            <p className="text-gray-700">Assign Task To: </p>
+            <p className="text-gray-700">Labels: </p>
             <Listbox
                 value={selectedLabels}
                 onChange={handleChange}

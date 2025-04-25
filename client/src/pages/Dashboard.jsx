@@ -6,7 +6,7 @@ import {FaArrowsToDot} from "react-icons/fa6";
 import clsx from "clsx";
 import Chart from "../components/Chart.jsx";
 import {BGS, PRIOTITYSTYELS, TASK_TYPE} from "../utils/consts.js";
-import UserInfo from "../components/UserInfo.jsx";
+import UserInfo from "../components/user/UserInfo.jsx";
 import moment from "moment";
 import {getInitials} from "../utils/initials.js";
 import {useGetTasksQuery, useGetUsersQuery} from "../redux/slices/apiSlice.js";

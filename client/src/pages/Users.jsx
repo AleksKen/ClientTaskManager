@@ -4,7 +4,7 @@ import {Button} from "@headlessui/react";
 import {IoMdAdd} from "react-icons/io";
 import {getInitials} from "../utils/initials.js";
 import clsx from "clsx";
-import AddUser from "../components/AddUser.jsx";
+import AddUser from "../components/user/AddUser.jsx";
 import {ConfirmationDialog, UserAction} from "../components/Dialogs.jsx";
 import {useDeleteUserMutation, useGetUsersQuery, useUpdateUserMutation} from "../redux/slices/apiSlice.js";
 

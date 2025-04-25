@@ -3,7 +3,7 @@ import {Dialog} from "@headlessui/react";
 import Textbox from "../Textbox.jsx";
 import {useForm} from "react-hook-form";
 import {useState} from "react";
-import UserList from "../UserList.jsx";
+import UserList from "../user/UserList.jsx";
 import SelectList from "../SelectList.jsx";
 import {BiImages} from "react-icons/bi";
 import Button from "../Button.jsx";

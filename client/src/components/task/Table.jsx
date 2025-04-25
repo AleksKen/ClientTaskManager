@@ -4,7 +4,7 @@ import {BGS, PRIOTITYSTYELS, TASK_TYPE} from "../../utils/consts.js";
 import clsx from "clsx";
 import {formatDate} from "../../utils/dates.js";
 import {BiMessageAltDetail} from "react-icons/bi";
-import UserInfo from "../UserInfo.jsx";
+import UserInfo from "../user/UserInfo.jsx";
 import {Button} from "@headlessui/react";
 import {ConfirmationDialog} from "../Dialogs.jsx";
 import {useNavigate} from "react-router-dom";

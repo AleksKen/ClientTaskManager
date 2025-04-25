@@ -2,9 +2,9 @@ import {Fragment, useEffect, useState} from "react";
 import {Listbox, Transition} from "@headlessui/react";
 import {BsChevronExpand} from "react-icons/bs";
 import clsx from "clsx";
-import {getInitials} from "../utils/initials.js";
+import {getInitials} from "../../utils/initials.js";
 import {MdCheck} from "react-icons/md";
-import {useGetUsersQuery} from "../redux/slices/apiSlice.js";
+import {useGetUsersQuery} from "../../redux/slices/apiSlice.js";
 
 const UserList = ({team, setTeam}) => {
     const [selectedUsers, setSelectedUsers] = useState([]);

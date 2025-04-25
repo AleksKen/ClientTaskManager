@@ -2,10 +2,10 @@ import {useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {Menu} from "@headlessui/react";
-import {getInitials} from "../utils/initials.js";
+import {getInitials} from "../../utils/initials.js";
 import {FaUser, FaUserLock} from "react-icons/fa";
 import {IoLogOutOutline} from "react-icons/io5";
-import {logout} from "../redux/slices/authSlice.js";
+import {logout} from "../../redux/slices/authSlice.js";
 
 const UserAvatar = () => {
     const [open, setOpen] = useState(false);

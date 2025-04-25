@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import {IoMdAdd} from "react-icons/io";
-import AddTask from "./task/AddTask.jsx";
+import AddTask from "./AddTask.jsx";
 import {useState} from "react";
 
 const TaskTitle = ({label, className}) => {
