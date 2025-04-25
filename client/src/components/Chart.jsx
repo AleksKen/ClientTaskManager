@@ -1,7 +1,6 @@
 import {Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
-import {chartData} from "../assets/data.js";
 
-const Chart = () => {
+const Chart = ({chartData}) => {
     return (
         <ResponsiveContainer
         width="100%"

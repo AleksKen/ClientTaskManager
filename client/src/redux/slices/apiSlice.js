@@ -16,11 +16,11 @@ const baseQuery = fetchBaseQuery({
 export const apiSlice = createApi({
     reducerPath: "api",
     baseQuery: baseQuery,
-    tagTypes: ['Task', 'User', 'Label'],
+    tagTypes: ['Task', 'User', 'Label', 'Activity'],
     endpoints: (builder) => ({
         getTasks: builder.query({
             query: () => '/tasks',
-            providesTags: ['Task'],
+            providesTags: ['Task', 'Activity'],
         }),
 
         getTask: builder.query({
@@ -59,6 +59,16 @@ export const apiSlice = createApi({
             query: () => '/labels',
             providesTags: ['Label'],
         }),
+
+
+        createActivity: builder.mutation({
+            query: (activity) => ({
+                url: '/activities',
+                method: 'POST',
+                body: activity,
+            }),
+            invalidatesTags: ['Activity'],
+        }),
     }),
 });
 
@@ -69,4 +79,5 @@ export const {
     useGetUsersQuery,
     useCreateUserMutation,
     useGetLabelsQuery,
+    useCreateActivityMutation,
 } = apiSlice;

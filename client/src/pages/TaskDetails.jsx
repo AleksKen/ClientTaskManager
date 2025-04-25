@@ -17,7 +17,7 @@ import {getInitials} from "../utils/initials.js";
 import moment from "moment";
 import Loader from "../components/Loader.jsx";
 import Button from "../components/Button.jsx";
-import {useGetTaskQuery} from "../redux/slices/apiSlice.js";
+import {useCreateActivityMutation, useGetTaskQuery} from "../redux/slices/apiSlice.js";
 
 const ICONS = {
     high: <MdKeyboardDoubleArrowUp/>,
@@ -81,7 +81,7 @@ const act_types = [
 const TaskDetails = () => {
     const {id} = useParams();
     const [selected, setSelected] = useState(0);
-    const { data: task, isLoading, error } = useGetTaskQuery(id);
+    const { data: task, isLoading, error, refetch } = useGetTaskQuery(id);
 
     return (
         <div className="w-full flex flex-col gap-3 mb-4 overflow-y-hidden">
@@ -182,7 +182,7 @@ const TaskDetails = () => {
                                 </div>
                             </div>
                             :
-                            <Activities activity={task?.activities} id={id}/>
+                            <Activities activity={task?.activities} id={id} refetch={refetch} />
                     }
                 </div>
             </Tabs>
@@ -190,12 +190,26 @@ const TaskDetails = () => {
     );
 };
 
-const Activities = ({activity, id}) => {
+const Activities = ({activity, id, refetch}) => {
     const [selected, setSelected] = useState(act_types[0]);
     const [text, setText] = useState("");
-    const isLoading = false;
+    const [createActivity, { isLoading, error }] = useCreateActivityMutation();
 
     const handleSubmit = async () => {
+        const activityData = {
+            type: selected,
+            content: text,
+            taskId: id,
+        };
+
+        try {
+            await createActivity(activityData).unwrap();
+            refetch();
+
+
+        } catch (err) {
+            console.error('Failed to create activity:', err);
+        }
     };
 
 
@@ -205,7 +219,7 @@ const Activities = ({activity, id}) => {
                 <div className=" left-5 top-0 flex flex-col items-center">
                     <div className="w-1 h-10 bg-gray-300"/>
                     <div className="w-10 h-10 flex items-center justify-center bg-gray-200 rounded-full z-10">
-                        {TASKTYPEICON[item?.type]}
+                        {TASKTYPEICON[item?.type.toLowerCase()]}
                     </div>
 
                     <div className="w-1 flex-1 bg-gray-300"/>
@@ -218,7 +232,7 @@ const Activities = ({activity, id}) => {
                         {" • "}
                         <span>{moment(item?.date).fromNow()}</span>
                     </div>
-                    <p className="text-gray-700 mt-1">{item?.activity}</p>
+                    <p className="text-gray-700 mt-1">{item?.content}</p>
                 </div>
             </div>
         );
@@ -230,7 +244,10 @@ const Activities = ({activity, id}) => {
             <div className="w-full md:w-2/3">
                 <h4 className="text-gray-600 font-semibold text-lg mb-5">Activities</h4>
                 <div className="relative">
-                    {activity?.map((el, index) => (
+                    {activity
+                        ?.slice()
+                        .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
+                        .map((el, index) => (
                         <Card
                             key={index}
                             item={el}

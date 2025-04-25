@@ -10,6 +10,7 @@ import UserInfo from "../components/UserInfo.jsx";
 import moment from "moment";
 import {getInitials} from "../utils/initials.js";
 import {useGetTasksQuery, useGetUsersQuery} from "../redux/slices/apiSlice.js";
+import {getChartData} from "../utils/сhartData.js";
 
 const TaskTable = ({tasks}) => {
     const ICONS = {
@@ -154,39 +155,39 @@ const UserTable = ({users}) => {
 const Dashboard = () => {
     const totals = summary.tasks
 
+    const { data: tasks } = useGetTasksQuery();
+    const { data: users } = useGetUsersQuery();
+
     const stats = [
         {
             _id: "1",
             label: "TOTAL TASK",
-            total: summary?.totalTasks || 0,
+            total: tasks?.length || 0,
             icon: <FaNewspaper/>,
             bg: "bg-[#1d4ed8]",
         },
         {
             _id: "2",
             label: "COMPLETED TASK",
-            total: totals["completed"] || 0,
+            total: tasks?.filter(task => task.stage === "completed").length || 0,
             icon: <MdAdminPanelSettings/>,
             bg: "bg-[#0f766e]",
         },
         {
             _id: "3",
             label: "TASK IN PROGRESS",
-            total: totals["in progress"] || 0,
+            total: tasks?.filter(task => task.stage === "in progress").length || 0,
             icon: <LuClipboardPenLine/>,
             bg: "bg-[#f59e0b]",
         },
         {
             _id: "4",
             label: "TODOS",
-            total: totals["todo"] || 0,
+            total: tasks?.filter(task => task.stage === "todo").length || 0,
             icon: <FaArrowsToDot/>,
             bg: "bg-[#be185d]",
         },
     ]
-
-    const { data: users } = useGetUsersQuery();
-    const { data: tasks } = useGetTasksQuery();
 
     const latest10Tasks = tasks
         ? [...tasks]
@@ -194,6 +195,15 @@ const Dashboard = () => {
             .slice(0, 10)
         : [];
 
+    const chartData = getChartData(tasks);
+
+    const currentDate = new Date();
+    const lastMonth = currentDate.getMonth() === 0 ? 11 : currentDate.getMonth() - 1;
+
+    const tasksFromLastMonth = tasks?.filter(task => {
+        const taskDate = new Date(task.createdAt);
+        return taskDate.getMonth() === lastMonth;
+    });
 
     const Card = ({label, count, bg, icon}) => {
         return (
@@ -201,7 +211,7 @@ const Dashboard = () => {
                 <div className="h-full flex flex-1 flex-col justify-between">
                     <p className="text-base text-gray-600">{label}</p>
                     <span className="text-2x1 font-semibold">{count}</span>
-                    <span className="text-sm text-gray-400">{"110 last month"}</span>
+                    <span className="text-sm text-gray-400">{tasksFromLastMonth?.length + " last month"}</span>
                 </div>
 
                 <div className={clsx("w-10 h-10 rounded-full flex items-center justify-center text-white", bg)}>
@@ -228,7 +238,7 @@ const Dashboard = () => {
 
         <div className="w-full bg-white p-4 rounded shadow-sm">
             <h4 className="text-xl text-gray-600 font-semibold">Chart by priority</h4>
-            <Chart/>
+            <Chart chartData={chartData} />
         </div>
 
         <div className="w-full flex flex-col md:flex-row gap-4 2xl:gap-10 py-8">
