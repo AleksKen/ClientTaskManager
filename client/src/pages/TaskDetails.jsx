@@ -205,7 +205,8 @@ const Activities = ({activity, id, refetch}) => {
         try {
             await createActivity(activityData).unwrap();
             refetch();
-
+            setText("");
+            setSelected(act_types[0]);
 
         } catch (err) {
             console.error('Failed to create activity:', err);

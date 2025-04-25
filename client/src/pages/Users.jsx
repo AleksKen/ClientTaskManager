@@ -6,7 +6,7 @@ import {getInitials} from "../utils/initials.js";
 import clsx from "clsx";
 import AddUser from "../components/AddUser.jsx";
 import {ConfirmationDialog, UserAction} from "../components/Dialogs.jsx";
-import {useGetUsersQuery} from "../redux/slices/apiSlice.js";
+import {useDeleteUserMutation, useGetUsersQuery} from "../redux/slices/apiSlice.js";
 
 
 
@@ -16,10 +16,21 @@ const Users = () => {
     const [openAction, setOpenAction] = useState(false);
     const [selected, setSelected] = useState(null);
     const [isEditMode, setIsEditMode] = useState(false);
-
+    const [deleteUser] = useDeleteUserMutation();
 
     const userActionHandler = () => {};
-    const deleteHandler = () => {};
+
+    const deleteHandler = async () => {
+        try {
+            await deleteUser(selected).unwrap();
+        } catch (err) {
+            console.error('Ошибка при удалении:', err);
+        } finally {
+            setOpenDialog(false);
+            setSelected(null);
+        }
+    };
+
     const { data: users } = useGetUsersQuery();
 
     const deleteClick = (id) => {

@@ -8,6 +8,7 @@ import UserInfo from "../UserInfo.jsx";
 import {Button} from "@headlessui/react";
 import {ConfirmationDialog} from "../Dialogs.jsx";
 import {useNavigate} from "react-router-dom";
+import {useDeleteTaskMutation} from "../../redux/slices/apiSlice.js";
 
 const ICONS = {
     high: <MdKeyboardDoubleArrowUp/>, medium: <MdKeyboardArrowUp/>, low: <MdKeyboardArrowDown/>,
@@ -16,6 +17,7 @@ const ICONS = {
 const Table = ({tasks}) => {
     const [openDialog, setOpenDialog] = useState(false);
     const [selected, setSelected] = useState(null);
+    const [deleteTask] = useDeleteTaskMutation();
 
     const navigate = useNavigate();
 
@@ -24,7 +26,15 @@ const Table = ({tasks}) => {
         setOpenDialog(true);
     };
 
-    const deleteHandler = () => {
+    const deleteHandler = async () => {
+        try {
+            await deleteTask(selected).unwrap();
+        } catch (err) {
+            console.error('Ошибка при удалении:', err);
+        } finally {
+            setOpenDialog(false);
+            setSelected(null);
+        }
     };
 
     const TableHeader = () => (
@@ -108,7 +118,7 @@ const Table = ({tasks}) => {
                 >Open</Button>
 
                 <Button
-                    onClick={() => deleteClicks()}
+                    onClick={() => deleteClicks(task.id)}
                     className="text-red-700 hover:text-red-500 sm:px-0 text-sm md:text-base"
                     label="Delete"
                     type="button"

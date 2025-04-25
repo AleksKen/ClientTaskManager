@@ -7,18 +7,28 @@ import {BsThreeDots} from "react-icons/bs";
 import {RiDeleteBin6Line} from "react-icons/ri";
 import AddTask from "./AddTask.jsx";
 import {ConfirmationDialog} from "../Dialogs.jsx";
+import {useDeleteTaskMutation} from "../../redux/slices/apiSlice.js";
 
 
 const TaskDialog = ({task}) => {
     const [openEdit, setOpenEdit] = useState(false);
     const [openDialog, setOpenDialog] = useState(false);
+    const [deleteTask] = useDeleteTaskMutation();
 
     const navigate = useNavigate();
 
     const deleteClicks = () => {
         setOpenDialog(true);
     };
-    const deleteHandler = () => {
+
+    const deleteHandler = async () => {
+        try {
+            await deleteTask(task.id).unwrap();
+        } catch (err) {
+            console.error('Ошибка при удалении задачи:', err);
+        } finally {
+            setOpenDialog(false);
+        }
     };
 
     const items = [

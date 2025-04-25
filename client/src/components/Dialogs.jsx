@@ -21,6 +21,8 @@ export const ConfirmationDialog = ({
         setMsg(null);
         setOpen(false);
     };
+
+
     return (
         <>
             <ModalWrapper open={open} setOpen={closeDialog}>
