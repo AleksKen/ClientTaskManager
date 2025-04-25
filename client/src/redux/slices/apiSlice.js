@@ -43,7 +43,16 @@ export const apiSlice = createApi({
             query: () => '/users',
             providesTags: ['User'],
         }),
+
+        createUser: builder.mutation({
+            query: (user) => ({
+                url: '/users',
+                method: 'POST',
+                body: user,
+            }),
+            invalidatesTags: ['User'],
+        }),
     }),
 });
 
-export const { useGetTasksQuery, useGetTaskQuery, useCreateTaskMutation, useGetUsersQuery } = apiSlice;
+export const { useGetTasksQuery, useGetTaskQuery, useCreateTaskMutation, useGetUsersQuery, useCreateUserMutation } = apiSlice;

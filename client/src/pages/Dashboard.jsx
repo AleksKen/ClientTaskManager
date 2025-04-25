@@ -143,7 +143,7 @@ const UserTable = ({users}) => {
             <TableHeader />
                 <tbody>
                 {users?.map((user, index) => (
-                    <TableRow key={index + user?._id} user={user} />
+                    <TableRow key={index + user?.id} user={user} />
                 ))}
                 </tbody>
             </table>

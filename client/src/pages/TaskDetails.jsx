@@ -157,7 +157,7 @@ const TaskDetails = () => {
                                                         </div>
 
                                                         <div>
-                                                            <p className="text-lg font-semibold">{m?.name}</p>
+                                                            <p className="text-lg font-semibold">{m?.firstName + " " + m?.lastName}</p>
                                                             <span className="text-gray-500">{m?.title}</span>
                                                         </div>
 

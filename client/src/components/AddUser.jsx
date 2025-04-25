@@ -4,26 +4,67 @@ import Textbox from "./Textbox.jsx";
 import {Dialog} from "@headlessui/react";
 import Loader from "./Loader.jsx";
 import Button from "./Button.jsx";
+import {useCreateUserMutation} from "../redux/slices/apiSlice.js";
+import {useEffect} from "react";
+
 
 const AddUser = ({open, setOpen, userData, isEditMode}) => {
-    let defaultValues = userData ?? {};
+    const defaultValues = isEditMode ? userData : {
+        firstName: '',
+        lastName: '',
+        title: '',
+        role: '',
+        email: '',
+        password: '',
+        isAdmin: false,
+        isActive: true,
+    };
 
-    const isLoading = false,
-        isUpdating = false;
+    const isUpdating = false;
 
     const {
         register,
         handleSubmit,
-        formState: {errors},
-    } = useForm({defaultValues});
+        formState: { errors },
+        reset,
+    } = useForm({
+        defaultValues,
+    });
 
-    const handleOnSubmit = () => {
+    useEffect(() => {
+        reset(defaultValues);
+    }, [userData, isEditMode]);
+
+
+    const [createUser, { isLoading, error }] = useCreateUserMutation();
+
+    const submitHandler = async (data) => {
+        const newUser = {
+            firstName: data.firstName,
+            lastName: data.lastName,
+            title: data.title,
+            role: data.role,
+            email: data.email,
+            password: data.password,
+            isAdmin: data.isAdmin,
+            isActive: data.isActive,
+        };
+
+        console.log("User data to be sent:", newUser);
+
+        try {
+            await createUser(newUser).unwrap();
+            reset();
+            setOpen(false);
+        } catch (err) {
+            console.error('Failed to create user:', err);
+        }
     };
 
     return (
         <>
             <ModalWrapper open={open} setOpen={setOpen}>
-                <form onSubmit={handleSubmit(handleOnSubmit)}>
+                <form onSubmit={handleSubmit(submitHandler)}>
                     <Dialog.Title
                         as="h2"
                         className="text-base font-bold leading-6 text-gray-900 mb-4"
@@ -31,17 +72,30 @@ const AddUser = ({open, setOpen, userData, isEditMode}) => {
                         {isEditMode ? "UPDATE PROFILE" : "ADD NEW USER"}
                     </Dialog.Title>
                     <div className="mt-2 flex flex-col gap-6">
-                        <Textbox
-                            placeholder="Full name"
-                            type="text"
-                            name="name"
-                            label="Full Name"
-                            className="w-full rounded"
-                            register={register("name", {
-                                required: "Full name is required!",
-                            })}
-                            error={errors.name ? errors.name.message : ""}
-                        />
+                        <div className="flex gap-4">
+                            <Textbox
+                                placeholder="First Name"
+                                type="text"
+                                name="firstName"
+                                label="First Name"
+                                className="w-full rounded"
+                                register={register("firstName", {
+                                    required: "First name is required!",
+                                })}
+                                error={errors.firstName ? errors.firstName.message : ""}
+                            />
+                            <Textbox
+                                placeholder="Last Name"
+                                type="text"
+                                name="lastName"
+                                label="Last Name"
+                                className="w-full rounded"
+                                register={register("lastName", {
+                                    required: "Last name is required!",
+                                })}
+                                error={errors.lastName ? errors.lastName.message : ""}
+                            />
+                        </div>
                         <Textbox
                             placeholder="Title"
                             type="text"
@@ -76,6 +130,39 @@ const AddUser = ({open, setOpen, userData, isEditMode}) => {
                             })}
                             error={errors.role ? errors.role.message : ""}
                         />
+                        <Textbox
+                            placeholder="Password"
+                            type="password"
+                            name="password"
+                            label="Password"
+                            className="w-full rounded"
+                            register={register("password", {
+                                required: "Password is required!",
+                            })}
+                            error={errors.password ? errors.password.message : ""}
+                        />
+
+
+                        <div className="flex gap-4 items-center">
+                            <label className="flex items-center gap-2">
+                                <input
+                                    type="checkbox"
+                                    {...register("isAdmin")}
+                                    className="h-4 w-4"
+                                />
+                                <span className="text-sm">Is Admin</span>
+                            </label>
+                            <label className="flex items-center gap-2">
+                                <input
+                                    type="checkbox"
+                                    {...register("isActive")}
+                                    className="h-4 w-4"
+                                />
+                                <span className="text-sm">Is Active</span>
+                            </label>
+                        </div>
+
+
                     </div>
                     {isLoading || isUpdating ? (
                         <div className="py-5">
@@ -93,7 +180,10 @@ const AddUser = ({open, setOpen, userData, isEditMode}) => {
                             <Button
                                 type="button"
                                 className="bg-white px-5 text-sm font-semibold text-gray-900 sm:w-auto"
-                                onClick={() => setOpen(false)}
+                                onClick={() => {
+                                    reset();
+                                    setOpen(false);
+                                }}
                                 label="Cancel"
                             >
                             </Button>
