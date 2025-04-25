@@ -35,7 +35,7 @@ const TaskCard = ({task}) => {
             </div>
 
             <span className='text-sm text-red-400'>
-                {"Deadline: " +formatDate(new Date(task?.deadline))}
+                {"Deadline: " + formatDate(new Date(task?.deadline))}
             </span>
 
             <div className="w-full border-t border-gray-200 my-2"/>
@@ -79,11 +79,14 @@ const TaskCard = ({task}) => {
                     <span className="text-sm text-gray-600">
                         {"Created At: " + formatDate(new Date(task?.createdAt))}
                     </span>
-                    {task?.label && (
-                        <span className="bg-blue-600/10 px-3 py-1 rounded-full text-blue-700 font-medium">
-                    {task.label}
-                </span>
-                    )}
+                    {task?.labels && task.labels.map((label) => (
+                        <span
+                            key={label.id}
+                            className="bg-blue-600/10 px-3 py-1 rounded-full text-blue-700 font-medium mr-2"
+                        >
+                        {label.name}
+                    </span>
+                    ))}
                 </div>
             </div>
 

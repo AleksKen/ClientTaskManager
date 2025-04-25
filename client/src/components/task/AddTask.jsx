@@ -8,6 +8,7 @@ import SelectList from "../SelectList.jsx";
 import {BiImages} from "react-icons/bi";
 import Button from "../Button.jsx";
 import {useCreateTaskMutation} from "../../redux/slices/apiSlice.js";
+import LabelList from "../LabelList.jsx";
 
 const LISTS = ["TODO", "IN PROGRESS", "COMPLETED"];
 const PRIORITY = ["HIGH", "MEDIUM", "NORMAL", "LOW"];
@@ -22,6 +23,7 @@ const AddTask = ({task, open, setOpen, label}) => {
     } = useForm();
 
     const [team, setTeam] = useState(task?.team || []);
+    const [taskLabels, setTaskLabels] = useState(task?.labels || []);
     const [stage, setStage] = useState(task?.stage?.toUpperCase() || label?.toUpperCase() || LISTS[0]);
     const [priority, setPriority] = useState(
         task?.priority?.toUpperCase() || PRIORITY[2]
@@ -39,7 +41,7 @@ const AddTask = ({task, open, setOpen, label}) => {
             priority: priority.toString().toLowerCase(),
             stage: stage.toString().toLowerCase(),
             teamIds: team.map(user => user.id),
-            taskLabelIds: undefined,
+            taskLabelIds: taskLabels.map(label => label.id),
             assets: undefined,
         };
 
@@ -82,19 +84,24 @@ const AddTask = ({task, open, setOpen, label}) => {
                         error={errors.title ? errors.title.message : ""}
                     />
 
-                    <Textbox
-                        placeholder="Description"
-                        type="text"
-                        name="description"
-                        label="Task Description"
-                        className="w-full rounded"
-                        register={register("description")}
-                        error=""
-                    />
+                    <div className="flex flex-col">
+                        <label className="font-medium text-gray-700 mb-1">Task Description</label>
+                        <textarea
+                            placeholder="Description"
+                            {...register("description")}
+                            className="w-full rounded border border-gray-300 px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            rows={4}
+                        />
+                    </div>
 
                     <UserList
                         setTeam={setTeam}
                         team={team}
+                    />
+
+                    <LabelList
+                        setTaskLabels={setTaskLabels}
+                        taskLabels={taskLabels}
                     />
 
                     <div className="flex gap-4">
@@ -162,10 +169,10 @@ const AddTask = ({task, open, setOpen, label}) => {
                         <Button
                             type="button"
                             className="bg-white px-5 text-sm font-semibold text-gray-900 sm:w-auto"
-                            onClick={() =>
-                            {
+                            onClick={() => {
                                 reset();
                                 setTeam([]);
+                                setTaskLabels([]);
                                 setStage(label?.toUpperCase() || LISTS[0]);
                                 setPriority(PRIORITY[2]);
                                 setAssets([]);
