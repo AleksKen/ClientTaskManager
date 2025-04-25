@@ -15,6 +15,8 @@ const TaskDialog = ({task}) => {
     const [openEdit, setOpenEdit] = useState(false);
     const [openDialog, setOpenDialog] = useState(false);
     const [deleteTask] = useDeleteTaskMutation();
+    const [isEditMode, setIsEditMode] = useState(false);
+
     const {userInfo} = useSelector((state) => state.auth);
 
     const navigate = useNavigate();
@@ -33,6 +35,11 @@ const TaskDialog = ({task}) => {
         }
     };
 
+    const editClick = (el) => {
+        setIsEditMode(true);
+        setOpenEdit(true);
+    };
+
     const items = [
         {
             label: "Open Task",
@@ -42,7 +49,7 @@ const TaskDialog = ({task}) => {
         {
             label: "Edit",
             icon: <MdOutlineEdit className="mr-2 h-5 w-5" aria-hidden="true"/>,
-            onClick: () => setOpenEdit(true),
+            onClick: editClick,
         }
     ].filter(item => {
         if (item.label !== "Open Task") {
@@ -118,6 +125,7 @@ const TaskDialog = ({task}) => {
                 setOpen={setOpenEdit}
                 task={task}
                 key={new Date().getTime()}
+                isEditMode={isEditMode}
             />
 
             <ConfirmationDialog

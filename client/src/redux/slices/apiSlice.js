@@ -41,7 +41,7 @@ export const apiSlice = createApi({
                 method: 'PUT',
                 body: updatedTask,
             }),
-            invalidatesTags: (result, error, { id }) => [{ type: 'Task', id }],
+            invalidatesTags: ['Task'],
         }),
         deleteTask: builder.mutation({
             query: (id) => ({

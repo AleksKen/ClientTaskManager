@@ -2,12 +2,12 @@ import ModalWrapper from "../ModalWrapper.jsx";
 import {Dialog} from "@headlessui/react";
 import Textbox from "../Textbox.jsx";
 import {useForm} from "react-hook-form";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import UserList from "../user/UserList.jsx";
 import SelectList from "../SelectList.jsx";
-import {BiImages} from "react-icons/bi";
+import {BiImages, BiX} from "react-icons/bi";
 import Button from "../Button.jsx";
-import {useCreateTaskMutation} from "../../redux/slices/apiSlice.js";
+import {useCreateTaskMutation, useUpdateTaskMutation, useUpdateUserMutation} from "../../redux/slices/apiSlice.js";
 import LabelList from "../LabelList.jsx";
 import {uploadImage} from "../../redux/actions/UploadImage.js";
 
@@ -15,7 +15,6 @@ const LISTS = ["TODO", "IN PROGRESS", "COMPLETED"];
 const PRIORITY = ["HIGH", "MEDIUM", "NORMAL", "LOW"];
 
 const AddTask = ({task, open, setOpen, label}) => {
-
     const {
         register,
         handleSubmit,
@@ -23,25 +22,41 @@ const AddTask = ({task, open, setOpen, label}) => {
         formState: {errors}
     } = useForm();
 
+    useEffect(() => {
+        if (task) {
+            reset({
+                title: task.title || "",
+                description: task.description || "",
+                date: task.deadline ? new Date(task.deadline).toISOString().split("T")[0] : ""
+            });
+        }
+    }, [task, reset]);
+
+
     const [team, setTeam] = useState(task?.team || []);
     const [taskLabels, setTaskLabels] = useState(task?.labels || []);
     const [stage, setStage] = useState(task?.stage?.toUpperCase() || label?.toUpperCase() || LISTS[0]);
     const [priority, setPriority] = useState(
         task?.priority?.toUpperCase() || PRIORITY[2]
     );
-    const [assets, setAssets] = useState([]);
+    const [assets, setAssets] = useState(task?.assets || []);
     const [uploading, setUploading] = useState(false);
-
     const [createTask, { isLoading, error }] = useCreateTaskMutation();
+    const [updateTask] = useUpdateTaskMutation();
 
     const handleSelect = (e) => {
-        setAssets(e.target.files);
+        setAssets([...assets, ...Array.from(e.target.files)]);
+    };
+
+    const handleRemoveAsset = (index) => {
+        const newAssets = [...assets];
+        newAssets.splice(index, 1);
+        setAssets(newAssets);
     };
 
     const submitHandler = async (data) => {
         try {
             setUploading(true);
-
 
             const uploadedAssets = [];
             for (let i = 0; i < assets.length; i++) {
@@ -62,7 +77,15 @@ const AddTask = ({task, open, setOpen, label}) => {
 
             console.log("Task data to be sent:", newTask);
 
-            await createTask(newTask).unwrap();
+            if (task) {
+                await updateTask({
+                    id: task.id,
+                    ...newTask
+                }).unwrap();
+            } else {
+                await createTask(newTask).unwrap();
+            }
+
             reset();
             setTeam([]);
             setStage(LISTS[0]);
@@ -165,6 +188,26 @@ const AddTask = ({task, open, setOpen, label}) => {
                             </label>
                         </div>
                     </div>
+                    {assets.length > 0 && (
+                        <div className="flex gap-2 flex-wrap mt-2">
+                            {assets.map((asset, idx) => (
+                                <div key={idx} className="relative w-16 h-16 border rounded overflow-hidden">
+                                    <img
+                                        src={typeof asset === "string" ? asset : URL.createObjectURL(asset)}
+                                        alt="preview"
+                                        className="w-full h-full object-cover"
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => handleRemoveAsset(idx)}
+                                        className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center"
+                                    >
+                                        <BiX className="w-full h-full text-white" />
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+                    )}
 
                     <div className="py-6 sm:flex sm:flex-row-reverse gap-4">
                         {uploading ? (
