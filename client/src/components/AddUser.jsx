@@ -4,7 +4,7 @@ import Textbox from "./Textbox.jsx";
 import {Dialog} from "@headlessui/react";
 import Loader from "./Loader.jsx";
 import Button from "./Button.jsx";
-import {useCreateUserMutation} from "../redux/slices/apiSlice.js";
+import {useCreateUserMutation, useUpdateUserMutation} from "../redux/slices/apiSlice.js";
 import {useEffect} from "react";
 
 
@@ -14,18 +14,16 @@ const AddUser = ({open, setOpen, userData, isEditMode}) => {
         lastName: '',
         title: '',
         role: '',
-        email: '',
-        password: '',
+        email: undefined,
+        password: undefined,
         isAdmin: false,
         isActive: true,
     };
 
-    const isUpdating = false;
-
     const {
         register,
         handleSubmit,
-        formState: { errors },
+        formState: {errors},
         reset,
     } = useForm({
         defaultValues,
@@ -36,7 +34,8 @@ const AddUser = ({open, setOpen, userData, isEditMode}) => {
     }, [userData, isEditMode]);
 
 
-    const [createUser, { isLoading, error }] = useCreateUserMutation();
+    const [createUser, {isLoading, error}] = useCreateUserMutation();
+    const [updateUser, { isLoading: isUpdating, error: updateError }] = useUpdateUserMutation();
 
     const submitHandler = async (data) => {
         const newUser = {
@@ -44,8 +43,8 @@ const AddUser = ({open, setOpen, userData, isEditMode}) => {
             lastName: data.lastName,
             title: data.title,
             role: data.role,
-            email: data.email,
-            password: data.password,
+            email: data.email || undefined,
+            password: data.password || undefined,
             isAdmin: data.isAdmin,
             isActive: data.isActive,
         };
@@ -53,7 +52,11 @@ const AddUser = ({open, setOpen, userData, isEditMode}) => {
         console.log("User data to be sent:", newUser);
 
         try {
-            await createUser(newUser).unwrap();
+            if (isEditMode) {
+                await updateUser({ ...newUser, id: userData.id }).unwrap();
+            } else {
+                await createUser(newUser).unwrap();
+            }
             reset();
             setOpen(false);
         } catch (err) {
@@ -80,7 +83,7 @@ const AddUser = ({open, setOpen, userData, isEditMode}) => {
                                 label="First Name"
                                 className="w-full rounded"
                                 register={register("firstName", {
-                                    required: "First name is required!",
+                                    required: !isEditMode && "First name is required!",
                                 })}
                                 error={errors.firstName ? errors.firstName.message : ""}
                             />
@@ -91,20 +94,18 @@ const AddUser = ({open, setOpen, userData, isEditMode}) => {
                                 label="Last Name"
                                 className="w-full rounded"
                                 register={register("lastName", {
-                                    required: "Last name is required!",
+                                    required: !isEditMode && "Last name is required!",
                                 })}
                                 error={errors.lastName ? errors.lastName.message : ""}
                             />
                         </div>
                         <Textbox
-                            placeholder="Title"
+                            placeholder="Status"
                             type="text"
-                            name="title"
-                            label="Title"
+                            name="status"
+                            label="Status"
                             className="w-full rounded"
-                            register={register("title", {
-                                required: "Title is required!",
-                            })}
+                            register={register("title")}
                             error={errors.title ? errors.title.message : ""}
                         />
                         <Textbox
@@ -114,7 +115,7 @@ const AddUser = ({open, setOpen, userData, isEditMode}) => {
                             label="Email Address"
                             className="w-full rounded"
                             register={register("email", {
-                                required: "Email Address is required!",
+                                required: !isEditMode && "Email Address is required!",
                             })}
                             error={errors.email ? errors.email.message : ""}
                         />
@@ -125,9 +126,7 @@ const AddUser = ({open, setOpen, userData, isEditMode}) => {
                             name="role"
                             label="Role"
                             className="w-full rounded"
-                            register={register("role", {
-                                required: "User role is required!",
-                            })}
+                            register={register("role")}
                             error={errors.role ? errors.role.message : ""}
                         />
                         <Textbox
@@ -137,7 +136,7 @@ const AddUser = ({open, setOpen, userData, isEditMode}) => {
                             label="Password"
                             className="w-full rounded"
                             register={register("password", {
-                                required: "Password is required!",
+                                required: !isEditMode && "Password is required!",
                             })}
                             error={errors.password ? errors.password.message : ""}
                         />

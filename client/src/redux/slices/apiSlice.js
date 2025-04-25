@@ -27,7 +27,6 @@ export const apiSlice = createApi({
             query: (id) => `/tasks/${id}`,
             providesTags: (result, error, id) => [{ type: 'Task', id }],
         }),
-
         createTask: builder.mutation({
             query: (task) => ({
                 url: '/tasks',
@@ -36,7 +35,14 @@ export const apiSlice = createApi({
             }),
             invalidatesTags: ['Task'],
         }),
-
+        updateTask: builder.mutation({
+            query: ({ id, ...updatedTask }) => ({
+                url: `/tasks/${id}`,
+                method: 'PUT',
+                body: updatedTask,
+            }),
+            invalidatesTags: (result, error, { id }) => [{ type: 'Task', id }],
+        }),
         deleteTask: builder.mutation({
             query: (id) => ({
                 url: `/tasks/${id}`,
@@ -44,6 +50,8 @@ export const apiSlice = createApi({
             }),
             invalidatesTags: ['Task'],
         }),
+
+
 
 
 
@@ -57,6 +65,14 @@ export const apiSlice = createApi({
                 url: '/users',
                 method: 'POST',
                 body: user,
+            }),
+            invalidatesTags: ['User'],
+        }),
+        updateUser: builder.mutation({
+            query: ({ id, ...updatedUser }) => ({
+                url: `/users/${id}`,
+                method: 'PUT',
+                body: updatedUser,
             }),
             invalidatesTags: ['User'],
         }),
@@ -91,10 +107,14 @@ export const {
     useGetTasksQuery,
     useGetTaskQuery,
     useCreateTaskMutation,
+    useUpdateTaskMutation,
     useDeleteTaskMutation,
+
     useGetUsersQuery,
     useCreateUserMutation,
+    useUpdateUserMutation,
     useDeleteUserMutation,
+
     useGetLabelsQuery,
     useCreateActivityMutation,
 } = apiSlice;

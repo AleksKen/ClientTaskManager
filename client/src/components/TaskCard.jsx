@@ -6,14 +6,12 @@ import TaskDialog from "./task/TaskDialog.jsx";
 import {formatDate} from "../utils/dates.js";
 import {BiMessageAltDetail} from "react-icons/bi";
 import UserInfo from "./UserInfo.jsx";
-import {useSelector} from "react-redux";
 
 const ICONS = {
     high: <MdKeyboardDoubleArrowUp/>, medium: <MdKeyboardArrowUp/>, low: <MdKeyboardArrowDown/>,
 };
 
 const TaskCard = ({task}) => {
-    const {userInfo} = useSelector((state) => state.auth);
     const [open, setOpen] = useState(false);
 
     return (
@@ -25,7 +23,7 @@ const TaskCard = ({task}) => {
                     <span className="text-lg">{ICONS[task?.priority]}</span>
                     <span>{task?.priority} Priority</span>
                 </div>
-                {userInfo?.isAdmin && <TaskDialog task={task}/>}
+                {<TaskDialog task={task}/>}
             </div>
 
 

@@ -8,12 +8,14 @@ import {RiDeleteBin6Line} from "react-icons/ri";
 import AddTask from "./AddTask.jsx";
 import {ConfirmationDialog} from "../Dialogs.jsx";
 import {useDeleteTaskMutation} from "../../redux/slices/apiSlice.js";
+import {useSelector} from "react-redux";
 
 
 const TaskDialog = ({task}) => {
     const [openEdit, setOpenEdit] = useState(false);
     const [openDialog, setOpenDialog] = useState(false);
     const [deleteTask] = useDeleteTaskMutation();
+    const {userInfo} = useSelector((state) => state.auth);
 
     const navigate = useNavigate();
 
@@ -42,7 +44,12 @@ const TaskDialog = ({task}) => {
             icon: <MdOutlineEdit className="mr-2 h-5 w-5" aria-hidden="true"/>,
             onClick: () => setOpenEdit(true),
         }
-    ];
+    ].filter(item => {
+        if (item.label !== "Open Task") {
+            return userInfo?.isAdmin;
+        }
+        return true;
+    });
 
     return (
         <>
@@ -81,24 +88,26 @@ const TaskDialog = ({task}) => {
                                     </Menu.Item>
                                 ))}
                             </div>
-                            <div className="px-1 py-1">
-                                <Menu.Item>
-                                    {({active}) => (
-                                        <button
-                                            onClick={() => deleteClicks()}
-                                            className={`${
-                                                active ? "bg-blue-500 text-white" : "text-red-900"
-                                            } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                                        >
-                                            <RiDeleteBin6Line
-                                                className="mr-2 h-5 w-5 text-red-400"
-                                                aria-hidden="true"
-                                            />
-                                            <span className="pl-2">Delete</span>
-                                        </button>
-                                    )}
-                                </Menu.Item>
-                            </div>
+                            {userInfo?.isAdmin && (
+                                <div className="px-1 py-1">
+                                    <Menu.Item>
+                                        {({active}) => (
+                                            <button
+                                                onClick={() => deleteClicks()}
+                                                className={`${
+                                                    active ? "bg-blue-500 text-white" : "text-red-900"
+                                                } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                                            >
+                                                <RiDeleteBin6Line
+                                                    className="mr-2 h-5 w-5 text-red-400"
+                                                    aria-hidden="true"
+                                                />
+                                                <span className="pl-2">Delete</span>
+                                            </button>
+                                        )}
+                                    </Menu.Item>
+                                </div>
+                            )}
                         </Menu.Items>
                     </Transition>
                 </Menu>

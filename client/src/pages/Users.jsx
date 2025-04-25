@@ -6,7 +6,7 @@ import {getInitials} from "../utils/initials.js";
 import clsx from "clsx";
 import AddUser from "../components/AddUser.jsx";
 import {ConfirmationDialog, UserAction} from "../components/Dialogs.jsx";
-import {useDeleteUserMutation, useGetUsersQuery} from "../redux/slices/apiSlice.js";
+import {useDeleteUserMutation, useGetUsersQuery, useUpdateUserMutation} from "../redux/slices/apiSlice.js";
 
 
 
@@ -17,8 +17,24 @@ const Users = () => {
     const [selected, setSelected] = useState(null);
     const [isEditMode, setIsEditMode] = useState(false);
     const [deleteUser] = useDeleteUserMutation();
+    const [updateUser] = useUpdateUserMutation();
 
-    const userActionHandler = () => {};
+    const userActionHandler = async () => {
+        if (!selected) return;
+
+        const updatedUser = {
+            ...selected,
+            isActive: !selected.isActive,
+        };
+        try {
+            await updateUser(updatedUser).unwrap();
+        } catch (err) {
+            console.error('Ошибка при обновлении пользователя:', err);
+        } finally {
+            setOpenAction(false);
+            setSelected(null);
+        }
+    };
 
     const deleteHandler = async () => {
         try {
@@ -44,7 +60,8 @@ const Users = () => {
         setOpen(true);
     };
 
-    const userStatusClick = () => {
+    const userStatusClick = (user) => {
+        setSelected(user);
         setOpenAction(true);
     };
 
@@ -52,7 +69,7 @@ const Users = () => {
         <thead className='border-b border-gray-300'>
         <tr className='text-black text-left'>
             <th className='py-2'>Full Name</th>
-            <th className='py-2'>Title</th>
+            <th className='py-2'>Status</th>
             <th className='py-2'>Email</th>
             <th className='py-2'>Role</th>
             <th className='py-2'>Active</th>
