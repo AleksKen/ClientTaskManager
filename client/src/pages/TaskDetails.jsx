@@ -124,14 +124,14 @@ const TaskDetails = () => {
                                     <div className='flex items-center gap-8 p-4 border-y border-gray-200'>
                                         <div className='space-x-2'>
                                             <span className='font-semibold'>Assets: </span>
-                                            <span>{task?.assets?.length}</span>
+                                            <span>{task?.assets?.length || 0}</span>
                                         </div>
 
                                         <span className='text-gray-400'>|</span>
 
                                         <div className='space-x-2'>
                                             <span className='font-semibold'>Activities: </span>
-                                            <span>{task?.activities?.length}</span>
+                                            <span>{task?.activities?.length || 0}</span>
                                         </div>
                                     </div>
 

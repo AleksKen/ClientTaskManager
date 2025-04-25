@@ -9,6 +9,7 @@ import {BiImages} from "react-icons/bi";
 import Button from "../Button.jsx";
 import {useCreateTaskMutation} from "../../redux/slices/apiSlice.js";
 import LabelList from "../LabelList.jsx";
+import {uploadImage} from "../../redux/actions/UploadImage.js";
 
 const LISTS = ["TODO", "IN PROGRESS", "COMPLETED"];
 const PRIORITY = ["HIGH", "MEDIUM", "NORMAL", "LOW"];
@@ -33,21 +34,34 @@ const AddTask = ({task, open, setOpen, label}) => {
 
     const [createTask, { isLoading, error }] = useCreateTaskMutation();
 
+    const handleSelect = (e) => {
+        setAssets(e.target.files);
+    };
+
     const submitHandler = async (data) => {
-        const newTask = {
-            title: data.title,
-            description: data.description || undefined,
-            deadline: new Date(data.date).toISOString(),
-            priority: priority.toString().toLowerCase(),
-            stage: stage.toString().toLowerCase(),
-            teamIds: team.map(user => user.id),
-            taskLabelIds: taskLabels.map(label => label.id),
-            assets: undefined,
-        };
-
-        console.log("Task data to be sent:", newTask);
-
         try {
+            setUploading(true);
+
+
+            const uploadedAssets = [];
+            for (let i = 0; i < assets.length; i++) {
+                const imageUrl = await uploadImage(assets[i]);
+                uploadedAssets.push(imageUrl);
+            }
+
+            const newTask = {
+                title: data.title,
+                description: data.description || undefined,
+                deadline: new Date(data.date).toISOString(),
+                priority: priority.toString().toLowerCase(),
+                stage: stage.toString().toLowerCase(),
+                teamIds: team.map(user => user.id),
+                taskLabelIds: taskLabels.map(label => label.id),
+                assets: uploadedAssets,
+            };
+
+            console.log("Task data to be sent:", newTask);
+
             await createTask(newTask).unwrap();
             reset();
             setTeam([]);
@@ -55,12 +69,11 @@ const AddTask = ({task, open, setOpen, label}) => {
             setPriority(PRIORITY[2]);
             setAssets([]);
             setOpen(false);
+            setUploading(false);
         } catch (err) {
             console.error('Failed to create task:', err);
+            setUploading(false);
         }
-    };
-    const handleSelect = (e) => {
-        setAssets(e.target.files);
     };
 
     return (

@@ -5,6 +5,7 @@ import {Menu} from "@headlessui/react";
 import {getInitials} from "../utils/initials.js";
 import {FaUser, FaUserLock} from "react-icons/fa";
 import {IoLogOutOutline} from "react-icons/io5";
+import {logout} from "../redux/slices/authSlice.js";
 
 const UserAvatar = () => {
     const [open, setOpen] = useState(false);
@@ -13,6 +14,7 @@ const UserAvatar = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const logoutHandler = () => {
+        dispatch(logout());
         console.log("logout");
     };
     return <div>

@@ -43,11 +43,11 @@ const TaskCard = ({task}) => {
                 <div className="flex items-center gap-3">
                     <div className="flex gap-1 items-center text-sm text-gray-600">
                         <BiMessageAltDetail/>
-                        <span>{task?.activities?.length}</span>
+                        <span>{task?.activities?.length || 0}</span>
                     </div>
                     <div className="flex gap-1 items-center text-sm text-gray-600">
                         <MdAttachFile/>
-                        <span>{task?.assets?.length}</span>
+                        <span>{task?.assets?.length || 0}</span>
                     </div>
                 </div>
 
