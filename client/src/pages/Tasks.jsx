@@ -13,6 +13,7 @@ import Table from "../components/task/Table.jsx";
 import AddTask from "../components/task/AddTask.jsx";
 import Button from "../components/Button.jsx";
 import {useGetTasksQuery} from "../redux/slices/apiSlice.js";
+import {useSelector} from "react-redux";
 
 const TABS = [
     {title: "Board View", icon: <MdGridView/>},
@@ -30,10 +31,17 @@ const Tasks = () => {
     const [selected, setSelected] = useState(0);
     const [open, setOpen] = useState(false);
     const status = params?.status || "";
+    const searchQuery = useSelector((state) => state.search.searchQuery);
     const { data: tasks, isLoading, error } = useGetTasksQuery();
-    const filteredTasks = status
-        ? tasks?.filter((task) => task.stage?.toLowerCase() === status.toLowerCase())
-        : tasks;
+
+    const filteredTasks = tasks?.filter((task) => {
+        const matchesStatus = status ? task.stage?.toLowerCase() === status.toLowerCase() : true;
+
+        const matchesQuery = task.title?.toLowerCase().includes(searchQuery?.toLowerCase()) ||
+            task.description?.toLowerCase().includes(searchQuery.toLowerCase());
+
+        return matchesStatus && matchesQuery;
+    });
 
 
     return isLoading ? (

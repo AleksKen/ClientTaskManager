@@ -1,12 +1,16 @@
-import {useDispatch, useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
 import {setOpenSidebar} from "../redux/slices/authSlice.js";
 import {MdOutlineSearch} from "react-icons/md";
 import UserAvatar from "./user/UserAvatar.jsx";
 import NotificationPanel from "./NotificationPanel.jsx";
+import {setSearchQuery} from "../redux/slices/searchSlice.js";
 
 const Navbar = () => {
-    const {user} = useSelector((state) => state.auth);
     const dispatch = useDispatch();
+
+    const handleSearchChange = (event) => {
+        dispatch(setSearchQuery(event.target.value));
+    };
 
     return <div className="flex items-center justify-between bg-white px-4 py-3 2xl:py-4 sticky z-10 top-0">
         <div className="flex gap-4">
@@ -19,6 +23,7 @@ const Navbar = () => {
                 <input
                     type="text"
                     placeholder="Search..."
+                    onChange={handleSearchChange}
                     className="flex-1 outline-none bg-transparent placeholder:text-gray-500 text-gray-800"
                 ></input>
             </div>
