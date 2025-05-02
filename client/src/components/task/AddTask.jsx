@@ -14,6 +14,8 @@ import {
 } from "../../redux/slices/apiSlice.js";
 import LabelList from "../LabelList.jsx";
 import {uploadImage} from "../../redux/actions/UploadImage.js";
+import {toast} from "sonner";
+import Loader from "../Loader.jsx";
 
 const LISTS = ["TODO", "IN PROGRESS", "COMPLETED"];
 const PRIORITY = ["HIGH", "MEDIUM", "NORMAL", "LOW"];
@@ -44,7 +46,7 @@ const AddTask = ({task, open, setOpen, label}) => {
     );
     const [assets, setAssets] = useState(task?.assets || []);
     const [uploading, setUploading] = useState(false);
-    const [createTask, { isLoading, error }] = useCreateTaskMutation();
+    const [createTask] = useCreateTaskMutation();
     const [updateTask] = useUpdateTaskMutation();
     const [createNotification] = useCreateNotificationMutation();
 
@@ -80,8 +82,6 @@ const AddTask = ({task, open, setOpen, label}) => {
                 assets: uploadedAssets,
             };
 
-            console.log("Task data to be sent:", newTask);
-
             let createdTask;
             if (task) {
                 createdTask = await updateTask({
@@ -95,6 +95,7 @@ const AddTask = ({task, open, setOpen, label}) => {
                     taskId: createdTask.id,
                     type: "message",
                 });
+                toast.success("Task changed successfully");
             } else {
                 createdTask = await createTask(newTask).unwrap();
 
@@ -104,6 +105,7 @@ const AddTask = ({task, open, setOpen, label}) => {
                     taskId: createdTask.id,
                     type: "alert",
                 });
+                toast.success("Task created successfully");
             }
 
             reset();
@@ -114,7 +116,7 @@ const AddTask = ({task, open, setOpen, label}) => {
             setOpen(false);
             setUploading(false);
         } catch (err) {
-            console.error('Failed to create task:', err);
+            toast.error("Failed to create task: " + err.data.detail);
             setUploading(false);
         }
     };
@@ -222,41 +224,41 @@ const AddTask = ({task, open, setOpen, label}) => {
                                         onClick={() => handleRemoveAsset(idx)}
                                         className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center"
                                     >
-                                        <BiX className="w-full h-full text-white" />
+                                        <BiX className="w-full h-full text-white"/>
                                     </button>
                                 </div>
                             ))}
                         </div>
                     )}
 
-                    <div className="py-6 sm:flex sm:flex-row-reverse gap-4">
-                        {uploading ? (
-                            <span className="text-sm py-2 text-red-500">
-                  Uploading assets
-                </span>
-                        ) : (
+                    {uploading ? (
+                        <div className="py-5">
+                            <Loader/>
+                        </div>
+                    ) : (
+                        <div className="py-6 sm:flex sm:flex-row-reverse gap-4">
                             <Button
                                 label="Submit"
                                 type="submit"
                                 className="bg-blue-600 px-8 text-sm font-semibold text-white hover:bg-blue-700  sm:w-auto"
                             />
-                        )}
 
-                        <Button
-                            type="button"
-                            className="bg-white px-5 text-sm font-semibold text-gray-900 sm:w-auto"
-                            onClick={() => {
-                                reset();
-                                setTeam([]);
-                                setTaskLabels([]);
-                                setStage(label?.toUpperCase() || LISTS[0]);
-                                setPriority(PRIORITY[2]);
-                                setAssets([]);
-                                setOpen(false);
-                            }}
-                            label="Cancel"
-                        />
-                    </div>
+                            <Button
+                                type="button"
+                                className="bg-white px-5 text-sm font-semibold text-gray-900 sm:w-auto"
+                                onClick={() => {
+                                    reset();
+                                    setTeam([]);
+                                    setTaskLabels([]);
+                                    setStage(label?.toUpperCase() || LISTS[0]);
+                                    setPriority(PRIORITY[2]);
+                                    setAssets([]);
+                                    setOpen(false);
+                                }}
+                                label="Cancel"
+                            />
+                        </div>
+                    )}
                 </div>
             </form>
         </ModalWrapper>

@@ -6,6 +6,7 @@ import Loader from "../Loader.jsx";
 import Button from "../Button.jsx";
 import {useCreateUserMutation, useUpdateUserMutation} from "../../redux/slices/apiSlice.js";
 import {useEffect} from "react";
+import {toast} from "sonner";
 
 
 const AddUser = ({open, setOpen, userData, isEditMode}) => {
@@ -49,18 +50,23 @@ const AddUser = ({open, setOpen, userData, isEditMode}) => {
             isActive: data.isActive,
         };
 
-        console.log("User data to be sent:", newUser);
-
         try {
             if (isEditMode) {
                 await updateUser({ ...newUser, id: userData.id }).unwrap();
+                toast.success("User changed successfully");
             } else {
                 await createUser(newUser).unwrap();
+                toast.success("User created successfully");
             }
             reset();
             setOpen(false);
         } catch (err) {
-            console.error('Failed to create user:', err);
+            if (isEditMode) {
+                toast.error("Failed to update user: " + err.data.detail);
+            }
+            else {
+                toast.error("Failed to create user: " + err.data.detail);
+            }
         }
     };
 

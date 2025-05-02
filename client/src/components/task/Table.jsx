@@ -30,7 +30,7 @@ const Table = ({tasks}) => {
         try {
             await deleteTask(selected).unwrap();
         } catch (err) {
-            console.error('Ошибка при удалении:', err);
+                console.error('Ошибка при удалении:', err);
         } finally {
             setOpenDialog(false);
             setSelected(null);
