@@ -1,46 +1,17 @@
-import {useState, Fragment} from 'react';
+import {Fragment} from 'react';
 import {HiBellAlert} from "react-icons/hi2";
 import {BiSolidMessageRounded} from "react-icons/bi";
 import {Popover, Transition} from "@headlessui/react";
 import {IoIosNotificationsOutline} from "react-icons/io";
 import moment from "moment";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import {useSelector} from "react-redux";
+import {
+    useDeleteNotificationMutation,
+    useGetNotificationsQuery,
+    useUpdateNotificationMutation
+} from "../redux/slices/apiSlice.js";
 
-const data = [
-    {
-        _id: "65c5bbf3787832cf99f28e6d",
-        team: [
-            "65c202d4aa62f32ffd1303cc",
-            "65c27a0e18c0a1b750ad5cad",
-            "65c30b96e639681a13def0b5",
-        ],
-        text: "New task has been assigned to you and 2 others. The task priority is set a normal priority, so check and act accordingly. The task date is Thu Feb 29 2024. Thank you!!!",
-        task: null,
-        notiType: "alert",
-        isRead: [],
-        createdAt: "2024-02-09T05:45:23.353Z",
-        updatedAt: "2024-02-09T05:45:23.353Z",
-        __v: 0,
-    },
-    {
-        _id: "65c5f12ab5204a81bde866ab",
-        team: [
-            "65c202d4aa62f32ffd1303cc",
-            "65c30b96e639681a13def0b5",
-            "65c317360fd860f958baa08e",
-        ],
-        text: "New task has been assigned to you and 2 others. The task priority is set a high priority, so check and act accordingly. The task date is Fri Feb 09 2024. Thank you!!!",
-        task: {
-            _id: "65c5f12ab5204a81bde866a9",
-            title: "Test task",
-        },
-        notiType: "alert",
-        isRead: [],
-        createdAt: "2024-02-09T09:32:26.810Z",
-        updatedAt: "2024-02-09T09:32:26.810Z",
-        __v: 0,
-    },
-];
 
 const ICONS = {
     alert: (
@@ -52,28 +23,83 @@ const ICONS = {
 };
 
 const NotificationPanel = () => {
-    const [open, setOpen] = useState(false);
-    const [selected, setSelected] = useState(null);
-    // const {data, refetch} = useGetNotificationsQuery();
-    // const [markAsRead] = useMarkNotiAsReadMutation();
-    const readHandler = () => {
+    const navigate = useNavigate();
+
+    const userInfo = useSelector((state) => state.auth.userInfo);
+
+    const { data, refetch } = useGetNotificationsQuery(undefined, {
+        selectFromResult: ({ data }) => ({
+            data: data
+                ?.filter((notification) => notification.teamIds.includes(userInfo.id))
+                .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()),
+        }),
+    });
+
+    const [deleteNotification] = useDeleteNotificationMutation();
+    const [updateNotification] = useUpdateNotificationMutation();
+
+    const handleNotificationClick = (notification, close) => {
+        const updatedTeamIds = notification.teamIds.filter((teamId) => teamId !== userInfo.id);
+
+        if (updatedTeamIds.length === 0) {
+            deleteNotification(notification.id).then(() => {
+                refetch();
+            });
+        } else {
+            updateNotification({
+                id: notification.id,
+                updatedData: {
+                    teamIds: updatedTeamIds,
+                },
+            }).then(() => {
+                refetch();
+            });
+        }
+
+        navigate(`/task/${notification.taskId}`);
+        close();
     };
-    const callsToAction = [
-        {name: 'Cancel', href: '#', icon: ''},
+
+    const handleMarkAllRead = async (close) => {
+        if (!data || data.length === 0) return;
+
+        const promises = data.map((notification) => {
+            const updatedTeamIds = notification.teamIds.filter((teamId) => teamId !== userInfo.id);
+
+            if (updatedTeamIds.length === 0) {
+                return deleteNotification(notification.id);
+            } else {
+                return updateNotification({
+                    id: notification.id,
+                    updatedData: {
+                        teamIds: updatedTeamIds,
+                    },
+                });
+            }
+        });
+
+        await Promise.all(promises);
+        refetch();
+        close();
+    };
+
+    const callsToAction = (close) => [
+        { name: 'Cancel', href: '#', icon: '', onClick: () => close() },
         {
             name: 'Mark All Read',
             href: '#',
             icon: '',
-            onClick: () => readHandler('all', ''),
+            onClick: () => handleMarkAllRead(close),
         },
     ];
+
 
     return (
         <Popover content='relative'>
             <Popover.Button className='inline-flex items-center outline-none'>
                 <div className='w-8 h-8 flex items-center justify-center text-gray-800 relative'>
                     <IoIosNotificationsOutline className='text-2xl'/>
-                    {data.length > 0 && (
+                    {data?.length > 0 && (
                         <span className='absolute text-center top-0 right-1 text-xs text-white
                         font-semibold w-4 h-4 rounded-full bg-red-600'>
                             {data?.length}
@@ -99,24 +125,24 @@ const NotificationPanel = () => {
                                 <div className='p-4'>
                                     {data?.slice(0, 5).map((item, index) => (
                                         <div
-                                            key={item._id + index}
+                                            key={item.id + index}
                                             className='group relative flex gap-x-4 rounded-lg p-4 hover:bg-gray-50'
                                         >
                                             <div
                                                 className='mt-1 h-8 w-8 flex items-center justify-center rounded-lg bg-gray-200 group-hover:bg-white'>
-                                                {ICONS[item.notiType]}
+                                                {ICONS[item.type]}
                                             </div>
 
                                             <div
                                                 className='cursor-pointer'
-                                                onClick={() => viewHandler(item)}
+                                                onClick={() => handleNotificationClick(item, close)}
                                             >
                                                 <div
                                                     className='flex items-center gap-3 font-semibold text-gray-900 capitalize'>
-                                                    <p> {item.notiType}</p>
+                                                    <p> {item.type}</p>
                                                     <span className='text-xs font-normal lowercase'>
-                              {moment(item.createdAt).fromNow()}
-                            </span>
+                                                      {moment(item.createdAt).fromNow()}
+                                                    </span>
                                                 </div>
                                                 <p className='line-clamp-1 mt-1 text-gray-600'>
                                                     {item.text}
@@ -126,17 +152,16 @@ const NotificationPanel = () => {
                                     ))}
                                 </div>
                                 <div className='grid grid-cols-2 divide-x bg-gray-50'>
-                                    {callsToAction.map((item) => (
+                                    {callsToAction(close).map((item) => (
                                         <Link
                                             key={item.name}
-                                            onClick={
-                                                item?.onClick ? () => item.onClick() : () => close()
-                                            }
+                                            onClick={item.onClick}
                                             className='flex items-center justify-center gap-x-2.5 p-3 font-semibold text-blue-600 hover:bg-gray-100'
                                         >
                                             {item.name}
                                         </Link>
                                     ))}
+
                                 </div>
                             </div>
                         )

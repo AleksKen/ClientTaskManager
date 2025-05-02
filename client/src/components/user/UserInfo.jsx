@@ -5,11 +5,19 @@ import { getInitials } from "../../utils/initials.js";
 const UserInfo = ({ user }) => {
     return (
         <div className="px-0">
-            <Popover className="relative">
+            <Popover className="">
                 {({ open }) => (
                     <>
-                        <Popover.Button className="group inline-flex items-center outline-none">
-                            <span>{getInitials(user?.firstName, user?.lastName)}</span>
+                        <Popover.Button className="h-7 w-7 rounded-full overflow-hidden text-white flex items-center justify-center text-sm">
+                            {user?.avatarProfile ? (
+                                <img
+                                    src={user.avatarProfile}
+                                    alt="User Avatar"
+                                    className="h-full w-full object-cover"
+                                />
+                            ) : (
+                                <span>{getInitials(user?.firstName, user?.lastName)}</span>
+                            )}
                         </Popover.Button>
 
                         <Transition
@@ -25,9 +33,17 @@ const UserInfo = ({ user }) => {
                             <Popover.Panel className="absolute left-1/2 z-10 mt-3 w-80 max-w-sm -translate-x-1/2 transform px-4 sm:px-0">
                                 <div className="flex items-center gap-4 rounded-lg shadow-lg bg-white p-8">
                                     <div className="w-16 h-16 min-w-16 min-h-16 bg-blue-600 rounded-full text-white flex items-center justify-center text-2xl">
-                                        <span className="text-center font-bold">
-                                            {getInitials(user?.firstName, user?.lastName)}
-                                        </span>
+                                        {user?.avatarProfile ? (
+                                            <img
+                                                src={user.avatarProfile}
+                                                alt="User Avatar"
+                                                className="w-full h-full rounded-full object-cover" // Применяем object-cover, чтобы изображение заполнило круг
+                                            />
+                                        ) : (
+                                            <span className="text-center font-bold">
+                                                {getInitials(user?.firstName, user?.lastName)}
+                                            </span>
+                                        )}
                                     </div>
                                     <div className="flex flex-col gap-y-1">
                                         <p className="text-black text-xl font-bold">{user?.firstName + " " + user?.lastName}</p>

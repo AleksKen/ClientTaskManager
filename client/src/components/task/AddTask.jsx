@@ -7,7 +7,11 @@ import UserList from "../user/UserList.jsx";
 import SelectList from "../SelectList.jsx";
 import {BiImages, BiX} from "react-icons/bi";
 import Button from "../Button.jsx";
-import {useCreateTaskMutation, useUpdateTaskMutation, useUpdateUserMutation} from "../../redux/slices/apiSlice.js";
+import {
+    useCreateNotificationMutation,
+    useCreateTaskMutation,
+    useUpdateTaskMutation
+} from "../../redux/slices/apiSlice.js";
 import LabelList from "../LabelList.jsx";
 import {uploadImage} from "../../redux/actions/UploadImage.js";
 
@@ -32,7 +36,6 @@ const AddTask = ({task, open, setOpen, label}) => {
         }
     }, [task, reset]);
 
-
     const [team, setTeam] = useState(task?.team || []);
     const [taskLabels, setTaskLabels] = useState(task?.labels || []);
     const [stage, setStage] = useState(task?.stage?.toUpperCase() || label?.toUpperCase() || LISTS[0]);
@@ -43,6 +46,8 @@ const AddTask = ({task, open, setOpen, label}) => {
     const [uploading, setUploading] = useState(false);
     const [createTask, { isLoading, error }] = useCreateTaskMutation();
     const [updateTask] = useUpdateTaskMutation();
+    const [createNotification] = useCreateNotificationMutation();
+
 
     const handleSelect = (e) => {
         setAssets([...assets, ...Array.from(e.target.files)]);
@@ -77,13 +82,28 @@ const AddTask = ({task, open, setOpen, label}) => {
 
             console.log("Task data to be sent:", newTask);
 
+            let createdTask;
             if (task) {
-                await updateTask({
+                createdTask = await updateTask({
                     id: task.id,
                     ...newTask
                 }).unwrap();
+
+                await createNotification({
+                    teamIds: newTask.teamIds,
+                    text: `Task updated: ${createdTask.title}!`,
+                    taskId: createdTask.id,
+                    type: "message",
+                });
             } else {
-                await createTask(newTask).unwrap();
+                createdTask = await createTask(newTask).unwrap();
+
+                await createNotification({
+                    teamIds: newTask.teamIds,
+                    text: `New task "${newTask.title}" has been assigned to you!`,
+                    taskId: createdTask.id,
+                    type: "alert",
+                });
             }
 
             reset();

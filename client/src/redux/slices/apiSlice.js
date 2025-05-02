@@ -1,10 +1,11 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 
-const API_URL = 'http://localhost:8080/api';
+// const API_URL = 'http://localhost:8080/api';
+const API_URL = 'https://servertaskmanager-production.up.railway.app/api';
 
 const baseQuery = fetchBaseQuery({
     baseUrl: API_URL,
-    prepareHeaders: (headers, { getState }) => {
+    prepareHeaders: (headers, {getState}) => {
         const token = getState().auth.token;
         if (token) {
             headers.set('Authorization', `Bearer ${token}`);
@@ -25,7 +26,7 @@ export const apiSlice = createApi({
 
         getTask: builder.query({
             query: (id) => `/tasks/${id}`,
-            providesTags: (result, error, id) => [{ type: 'Task', id }],
+            providesTags: (result, error, id) => [{type: 'Task', id}],
         }),
         createTask: builder.mutation({
             query: (task) => ({
@@ -36,7 +37,7 @@ export const apiSlice = createApi({
             invalidatesTags: ['Task'],
         }),
         updateTask: builder.mutation({
-            query: ({ id, ...updatedTask }) => ({
+            query: ({id, ...updatedTask}) => ({
                 url: `/tasks/${id}`,
                 method: 'PUT',
                 body: updatedTask,
@@ -50,8 +51,6 @@ export const apiSlice = createApi({
             }),
             invalidatesTags: ['Task'],
         }),
-
-
 
 
 
@@ -69,12 +68,12 @@ export const apiSlice = createApi({
             invalidatesTags: ['User'],
         }),
         updateUser: builder.mutation({
-            query: ({ id, ...updatedUser }) => ({
+            query: ({id, ...updatedUser}) => ({
                 url: `/users/${id}`,
                 method: 'PUT',
                 body: updatedUser,
             }),
-            invalidatesTags: ['User'],
+            invalidatesTags: ['User', 'Task'],
         }),
         deleteUser: builder.mutation({
             query: (id) => ({
@@ -85,11 +84,13 @@ export const apiSlice = createApi({
         }),
 
 
-
         getLabels: builder.query({
             query: () => '/labels',
             providesTags: ['Label'],
         }),
+
+
+
 
 
         createActivity: builder.mutation({
@@ -99,6 +100,37 @@ export const apiSlice = createApi({
                 body: activity,
             }),
             invalidatesTags: ['Activity'],
+        }),
+
+
+
+
+        getNotifications: builder.query({
+            query: () => '/notifications',
+            providesTags: ['Notification'],
+        }),
+        createNotification: builder.mutation({
+            query: (notification) => ({
+                url: '/notifications',
+                method: 'POST',
+                body: notification,
+            }),
+            invalidatesTags: ['Notification'],
+        }),
+        updateNotification: builder.mutation({
+            query: ({ id, updatedData }) => ({
+                url: `/notifications/${id}`,
+                method: 'PUT',
+                body: updatedData,
+            }),
+            invalidatesTags: ['Notification'],
+        }),
+        deleteNotification: builder.mutation({
+            query: (id) => ({
+                url: `/notifications/${id}`,
+                method: 'DELETE',
+            }),
+            invalidatesTags: ['Notification'],
         }),
     }),
 });
@@ -117,4 +149,9 @@ export const {
 
     useGetLabelsQuery,
     useCreateActivityMutation,
+
+    useGetNotificationsQuery,
+    useCreateNotificationMutation,
+    useUpdateNotificationMutation,
+    useDeleteNotificationMutation,
 } = apiSlice;

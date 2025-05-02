@@ -1,4 +1,3 @@
-import {summary} from "../assets/data.js";
 import {FaNewspaper} from "react-icons/fa";
 import {MdAdminPanelSettings, MdKeyboardArrowDown, MdKeyboardArrowUp, MdKeyboardDoubleArrowUp} from "react-icons/md";
 import {LuClipboardPenLine} from "react-icons/lu";
@@ -98,7 +97,7 @@ const UserTable = ({users}) => {
         <thead className='border-b border-gray-300'>
         <tr className='text-black text-left'>
             <th className='py-2'>Full Name</th>
-            <th className='py-2'>Status</th>
+            <th className='py-2'>State</th>
             <th className="py-2 hidden md:block">Created At</th>
         </tr>
         </thead>
@@ -110,7 +109,16 @@ const UserTable = ({users}) => {
                 <div className='flex items-center gap-3'>
                     <div
                         className='w-9 h-9 rounded-full text-white flex items-center justify-center text-sm bg-violet-700'>
-                        <span className='text-center'>{getInitials(user?.firstName, user?.lastName)}</span>
+
+                        {user?.avatarProfile ? (
+                            <img
+                                src={user.avatarProfile}
+                                alt="User Avatar"
+                                className="w-full h-full object-cover rounded-full"
+                            />
+                        ) : (
+                            <span className='text-center'>{getInitials(user?.firstName, user?.lastName)}</span>
+                        )}
                     </div>
 
                     <div>
@@ -153,8 +161,6 @@ const UserTable = ({users}) => {
 };
 
 const Dashboard = () => {
-    const totals = summary.tasks
-
     const { data: tasks } = useGetTasksQuery();
     const { data: users } = useGetUsersQuery();
 

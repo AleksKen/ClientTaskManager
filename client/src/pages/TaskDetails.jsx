@@ -151,9 +151,18 @@ const TaskDetails = () => {
                                                                 "w-10 h-10 rounded-full text-white flex items-center justify-center text-sm -mr-1 bg-blue-600"
                                                             }
                                                         >
-                                                        <span className='text-center'>
-                                                            {getInitials(m?.firstName, m?.lastName)}
-                                                        </span>
+
+                                                            {m?.avatarProfile ? (
+                                                                <img
+                                                                    src={m.avatarProfile}
+                                                                    alt="User Avatar"
+                                                                    className="w-full h-full object-cover rounded-full"
+                                                                />
+                                                            ) : (
+                                                                <span className='text-center'>
+                                                                    {getInitials(m?.firstName, m?.lastName)}
+                                                                </span>
+                                                            )}
                                                         </div>
 
                                                         <div>

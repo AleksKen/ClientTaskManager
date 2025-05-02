@@ -14,6 +14,7 @@ import clsx from "clsx";
 import {IoClose} from "react-icons/io5";
 import TaskDetails from "./pages/TaskDetails.jsx";
 import DrawingBoard from "./pages/DrawingBoard.jsx";
+import Profile from "./pages/Profile.jsx";
 
 
 function Layout() {
@@ -96,6 +97,7 @@ function App() {
                     <Route index path="/" element={<Navigate to="/dashboard"/>}/>
                     <Route path="/dashboard" element={<Dashboard/>}/>
                     <Route path="/tasks" element={<Tasks/>}/>
+                    <Route path="/profile" element={<Profile/>}/>
                     <Route path='/completed/:status' element={<Tasks/>}/>
                     <Route path='/in-progress/:status' element={<Tasks/>}/>
                     <Route path='/todo/:status' element={<Tasks/>}/>

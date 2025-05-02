@@ -2,12 +2,14 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import {setCredentials} from "../slices/authSlice.js";
 
+const API_URL = 'https://servertaskmanager-production.up.railway.app/api';
+// const API_URL = 'http://localhost:8080/api';
 
 export const login = createAsyncThunk(
     "auth/login",
     async ({ email, password }, { dispatch, rejectWithValue }) => {
         try {
-            const response = await axios.post("http://localhost:8080/api/login", {
+            const response = await axios.post(`${API_URL}/login`, {
                 username: email,
                 password,
             });

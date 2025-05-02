@@ -8,7 +8,7 @@ import {useGetUsersQuery} from "../../redux/slices/apiSlice.js";
 
 const UserList = ({team, setTeam}) => {
     const [selectedUsers, setSelectedUsers] = useState([]);
-    const { data: users } = useGetUsersQuery();
+    const {data: users} = useGetUsersQuery();
 
     const handleChange = (e) => {
         setSelectedUsers(e);
@@ -78,9 +78,20 @@ const UserList = ({team, setTeam}) => {
                                             >
                                                 <div
                                                     className="w-6 h-6 rounded-full text-white flex items-center justify-center bg-violet-600">
-                          <span className="text-center text-[10px]">
+
+
+                                                    {user?.avatarProfile ? (
+                                                        <img
+                                                            src={user.avatarProfile}
+                                                            alt="User Avatar"
+                                                            className="w-full h-full object-cover rounded-full"
+                                                        />
+                                                    ) : (
+                                                        <span className="text-center text-[10px]">
                             {getInitials(user?.firstName, user?.lastName)}
                           </span>
+                                                    )}
+
                                                 </div>
                                                 <span>{user?.firstName + " " + user?.lastName}</span>
                                             </div>

@@ -21,9 +21,17 @@ const UserAvatar = () => {
         <Menu as='div' className='relative inline-block text-left'>
             <div>
                 <Menu.Button className='flex w-12 h-12 2xl:h-12 items-center justify-center rounded-full bg-blue-600'>
-                    <span className='text-white font-semibold'>
-                        {getInitials(userInfo?.firstName, userInfo?.lastName)}
-                    </span>
+                    {userInfo?.avatarProfile ? (
+                        <img
+                            src={userInfo.avatarProfile}
+                            alt="User Avatar"
+                            className="w-full h-full object-cover rounded-full"
+                        />
+                    ) : (
+                        <span className="text-white font-semibold">
+                            {getInitials(userInfo?.firstName, userInfo?.lastName)}
+                        </span>
+                    )}
                 </Menu.Button>
             </div>
             <Menu.Items
@@ -33,7 +41,10 @@ const UserAvatar = () => {
                 <div className='p-4'>
                     <Menu.Item>
                         <button
-                            onClick={() => setOpen(true)}
+                            onClick={() => {
+                                setOpen(false);
+                                navigate('/profile');
+                            }}
                             className='text-gray-700 group flex w-full items-center rounded-md px-2 py-2 text-base'
                         >
                             <FaUser className='mr-2' aria-hidden='true'/>
