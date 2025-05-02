@@ -15,7 +15,6 @@ const UserAvatar = () => {
     const navigate = useNavigate();
     const logoutHandler = () => {
         dispatch(logout());
-        console.log("logout");
     };
     return (
         <>

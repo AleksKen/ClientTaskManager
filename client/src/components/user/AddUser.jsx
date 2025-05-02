@@ -35,8 +35,8 @@ const AddUser = ({open, setOpen, userData, isEditMode}) => {
     }, [userData, isEditMode]);
 
 
-    const [createUser, {isLoading, error}] = useCreateUserMutation();
-    const [updateUser, { isLoading: isUpdating, error: updateError }] = useUpdateUserMutation();
+    const [createUser, {isLoading}] = useCreateUserMutation();
+    const [updateUser, {isLoading: isUpdating}] = useUpdateUserMutation();
 
     const submitHandler = async (data) => {
         const newUser = {
@@ -52,7 +52,7 @@ const AddUser = ({open, setOpen, userData, isEditMode}) => {
 
         try {
             if (isEditMode) {
-                await updateUser({ ...newUser, id: userData.id }).unwrap();
+                await updateUser({...newUser, id: userData.id}).unwrap();
                 toast.success("User changed successfully");
             } else {
                 await createUser(newUser).unwrap();
@@ -63,8 +63,7 @@ const AddUser = ({open, setOpen, userData, isEditMode}) => {
         } catch (err) {
             if (isEditMode) {
                 toast.error("Failed to update user: " + err.data.detail);
-            }
-            else {
+            } else {
                 toast.error("Failed to create user: " + err.data.detail);
             }
         }

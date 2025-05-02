@@ -1,5 +1,4 @@
 import {MdAttachFile, MdKeyboardArrowDown, MdKeyboardArrowUp, MdKeyboardDoubleArrowUp} from "react-icons/md";
-import {useState} from "react";
 import clsx from "clsx";
 import {BGS, PRIOTITYSTYELS, TASK_TYPE} from "../../utils/consts.js";
 import TaskDialog from "./TaskDialog.jsx";
@@ -12,10 +11,7 @@ const ICONS = {
 };
 
 const TaskCard = ({task}) => {
-    const [open, setOpen] = useState(false);
-
     return (
-
         <div className="w-full h-fit bg-white shadow-md p-4 rounded">
             <div className="w-full flex justify-between">
                 <div
@@ -87,7 +83,6 @@ const TaskCard = ({task}) => {
                     ))}
                 </div>
             </div>
-
         </div>
     );
 };

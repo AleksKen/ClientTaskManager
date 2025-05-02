@@ -9,6 +9,7 @@ import {Button} from "@headlessui/react";
 import {ConfirmationDialog} from "../Dialogs.jsx";
 import {useNavigate} from "react-router-dom";
 import {useDeleteTaskMutation} from "../../redux/slices/apiSlice.js";
+import {toast} from "sonner";
 
 const ICONS = {
     high: <MdKeyboardDoubleArrowUp/>, medium: <MdKeyboardArrowUp/>, low: <MdKeyboardArrowDown/>,
@@ -30,7 +31,7 @@ const Table = ({tasks}) => {
         try {
             await deleteTask(selected).unwrap();
         } catch (err) {
-                console.error('Ошибка при удалении:', err);
+                toast.error("Delete task failed.");
         } finally {
             setOpenDialog(false);
             setSelected(null);

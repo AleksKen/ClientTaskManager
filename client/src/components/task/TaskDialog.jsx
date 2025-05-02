@@ -9,6 +9,7 @@ import AddTask from "./AddTask.jsx";
 import {ConfirmationDialog} from "../Dialogs.jsx";
 import {useDeleteTaskMutation} from "../../redux/slices/apiSlice.js";
 import {useSelector} from "react-redux";
+import {toast} from "sonner";
 
 
 const TaskDialog = ({task}) => {
@@ -29,7 +30,7 @@ const TaskDialog = ({task}) => {
         try {
             await deleteTask(task.id).unwrap();
         } catch (err) {
-            console.error('Ошибка при удалении задачи:', err);
+            toast.error("Delete task failed.");
         } finally {
             setOpenDialog(false);
         }

@@ -7,6 +7,7 @@ import clsx from "clsx";
 import AddUser from "../components/user/AddUser.jsx";
 import {ConfirmationDialog, UserAction} from "../components/Dialogs.jsx";
 import {useDeleteUserMutation, useGetUsersQuery, useUpdateUserMutation} from "../redux/slices/apiSlice.js";
+import {toast} from "sonner";
 
 
 
@@ -29,7 +30,7 @@ const Users = () => {
         try {
             await updateUser(updatedUser).unwrap();
         } catch (err) {
-            console.error('Ошибка при обновлении пользователя:', err);
+            toast.error("Failed to update user.");
         } finally {
             setOpenAction(false);
             setSelected(null);
@@ -40,7 +41,7 @@ const Users = () => {
         try {
             await deleteUser(selected).unwrap();
         } catch (err) {
-            console.error('Ошибка при удалении:', err);
+            toast.error("Delete user failed.");
         } finally {
             setOpenDialog(false);
             setSelected(null);
@@ -192,8 +193,7 @@ const Users = () => {
                 onClick={userActionHandler}
             />
         </>
-    )
-        ;
+    );
 };
 
 export default Users;

@@ -88,8 +88,8 @@ const UserList = ({team, setTeam}) => {
                                                         />
                                                     ) : (
                                                         <span className="text-center text-[10px]">
-                            {getInitials(user?.firstName, user?.lastName)}
-                          </span>
+                                                            {getInitials(user?.firstName, user?.lastName)}
+                                                        </span>
                                                     )}
 
                                                 </div>
@@ -98,8 +98,8 @@ const UserList = ({team, setTeam}) => {
                                             {selected ? (
                                                 <span
                                                     className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
-                          <MdCheck className="h-5 w-5" aria-hidden="true"/>
-                        </span>
+                                                  <MdCheck className="h-5 w-5" aria-hidden="true"/>
+                                                </span>
                                             ) : null}
                                         </>
                                     )}
