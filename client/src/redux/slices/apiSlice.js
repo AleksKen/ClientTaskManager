@@ -1,7 +1,7 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 
 // const API_URL = 'http://localhost:8080/api';
-const API_URL = 'https://servertaskmanager-production.up.railway.app/api';
+const API_URL = 'https://servertaskmanager.onrender.com/api';
 
 const baseQuery = fetchBaseQuery({
     baseUrl: API_URL,
