@@ -10,6 +10,7 @@ import moment from "moment";
 import {getInitials} from "../utils/initials.js";
 import {useGetTasksQuery, useGetUsersQuery} from "../redux/slices/apiSlice.js";
 import {getChartData} from "../utils/сhartData.js";
+import ChatWidget from "../components/ChatWidget.jsx";
 
 const TaskTable = ({tasks}) => {
     const ICONS = {
@@ -253,6 +254,8 @@ const Dashboard = () => {
             {/*/right*/}
             <UserTable users={users}/>
         </div>
+
+        <ChatWidget />
     </div>;
 };
 

@@ -2,8 +2,6 @@ import {useDispatch, useSelector} from "react-redux";
 import {FaUserCircle, FaEnvelope, FaCalendarAlt} from "react-icons/fa";
 import clsx from "clsx";
 import moment from "moment";
-import "leaflet/dist/leaflet.css";
-import "react-calendar/dist/Calendar.css";
 import {AiFillApi} from "react-icons/ai";
 import {getChartData} from "../utils/сhartData.js";
 import {useGetTasksQuery, useUpdateUserMutation} from "../redux/slices/apiSlice.js";

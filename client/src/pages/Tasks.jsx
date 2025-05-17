@@ -14,6 +14,7 @@ import AddTask from "../components/task/AddTask.jsx";
 import Button from "../components/Button.jsx";
 import {useGetTasksQuery} from "../redux/slices/apiSlice.js";
 import {useSelector} from "react-redux";
+import ChatWidget from "../components/ChatWidget.jsx";
 
 const TABS = [
     {title: "Board View", icon: <MdGridView/>},
@@ -96,6 +97,8 @@ const Tasks = () => {
             </Tabs>
 
             <AddTask open={open} setOpen={setOpen}/>
+
+            <ChatWidget />
         </div>
     );
 };
