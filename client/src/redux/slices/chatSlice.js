@@ -1,7 +1,7 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 
-// const API_URL = 'http://localhost:8000';
-const API_URL = 'https://4c86-34-16-147-6.ngrok-free.app';
+const API_URL = 'http://localhost:8000';
+// const API_URL = 'https://8624-34-148-206-90.ngrok-free.app';
 
 const baseQuery = fetchBaseQuery({
     baseUrl: API_URL,
@@ -23,10 +23,10 @@ export const chatSlice = createApi({
             query: (question) => ({
                 url: '/chat',
                 method: 'GET',
-                params: { question },
+                params: {question},
             }),
         }),
     }),
 });
 
-export const { useLazyAskChatQuery } = chatSlice;
+export const {useLazyAskChatQuery} = chatSlice;

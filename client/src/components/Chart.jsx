@@ -1,28 +1,24 @@
-import {Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis} from "recharts";
+import {ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Legend, CartesianGrid, Cell} from 'recharts';
 
 const Chart = ({chartData}) => {
+    const colors = ['#df7eb7', '#d8a163', '#82bdca', '#4d7ced'];
+
     return (
-        <ResponsiveContainer
-        width="100%"
-        height={300}
-        >
-        <BarChart
-        width={150}
-        height={40}
-        data={chartData}
-        >
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <CartesianGrid strokeDasharray="3 3"/>
-            <Bar
-                dataKey="total"
-                fill="#8884d8"
-            />
-        </BarChart>
+        <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={chartData}>
+                <XAxis dataKey="name"/>
+                <YAxis/>
+                <Tooltip/>
+                <CartesianGrid strokeDasharray="3 3"/>
+                <Bar dataKey="total">
+                    {chartData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={colors[index % colors.length]}/>
+                    ))}
+                </Bar>
+            </BarChart>
         </ResponsiveContainer>
-    )
-}
+    );
+};
+
 
 export default Chart

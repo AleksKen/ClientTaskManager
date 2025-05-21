@@ -51,7 +51,7 @@ const TaskTable = ({tasks}) => {
                 </div>
             </td>
 
-            <td className='py-2' style={{ minWidth: "80px" }}>
+            <td className='py-2' style={{minWidth: "80px"}}>
                 <div className="relative h-7">
                     {task.team.map((m, index) => (
                         <div
@@ -60,7 +60,7 @@ const TaskTable = ({tasks}) => {
                                 "w-7 h-7 rounded-full text-white flex items-center justify-center text-sm absolute",
                                 BGS[index % BGS.length]
                             )}
-                            style={{ left: `${index === 0 ? 0 : index * 18}px` }}
+                            style={{left: `${index === 0 ? 0 : index * 18}px`}}
                         >
                             <UserInfo user={m}/>
                         </div>
@@ -150,10 +150,10 @@ const UserTable = ({users}) => {
     return (
         <div className='w-full md:w-2/3 min-w-[350] bg-white h-fit px-2 md:px-6 py-4 shadow-md rounded'>
             <table className='w-full mb-5'>
-            <TableHeader />
+                <TableHeader/>
                 <tbody>
                 {users?.map((user, index) => (
-                    <TableRow key={index + user?.id} user={user} />
+                    <TableRow key={index + user?.id} user={user}/>
                 ))}
                 </tbody>
             </table>
@@ -162,37 +162,33 @@ const UserTable = ({users}) => {
 };
 
 const Dashboard = () => {
-    const { data: tasks } = useGetTasksQuery();
-    const { data: users } = useGetUsersQuery();
+    const {data: tasks} = useGetTasksQuery();
+    const {data: users} = useGetUsersQuery();
 
     const stats = [
         {
             _id: "1",
             label: "TOTAL TASK",
             total: tasks?.length || 0,
-            icon: <FaNewspaper/>,
-            bg: "bg-[#1d4ed8]",
+            imgSrc: "https://cdn-icons-png.flaticon.com/512/5423/5423374.png",
         },
         {
             _id: "2",
             label: "COMPLETED TASK",
             total: tasks?.filter(task => task.stage === "completed").length || 0,
-            icon: <MdAdminPanelSettings/>,
-            bg: "bg-[#0f766e]",
+            imgSrc: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSI64fWuXaQ-liXGLFmCYzEP5mZEHopmeFFGw&s",
         },
         {
             _id: "3",
             label: "TASK IN PROGRESS",
             total: tasks?.filter(task => task.stage === "in progress").length || 0,
-            icon: <LuClipboardPenLine/>,
-            bg: "bg-[#f59e0b]",
+            imgSrc: "https://itspectr.ru/wp-content/uploads/2021/12/frame-98-1024x540.png",
         },
         {
             _id: "4",
             label: "TODOS",
             total: tasks?.filter(task => task.stage === "todo").length || 0,
-            icon: <FaArrowsToDot/>,
-            bg: "bg-[#be185d]",
+            imgSrc: "https://cdn-icons-png.flaticon.com/512/11532/11532803.png",
         },
     ]
 
@@ -212,7 +208,7 @@ const Dashboard = () => {
         return taskDate.getMonth() === lastMonth;
     });
 
-    const Card = ({label, count, bg, icon}) => {
+    const Card = ({label, count, imgSrc}) => {
         return (
             <div className="w-full h-32 bg-white p-5 shadow-md rounded-md flex items-center justify-between">
                 <div className="h-full flex flex-1 flex-col justify-between">
@@ -221,9 +217,10 @@ const Dashboard = () => {
                     <span className="text-sm text-gray-400">{tasksFromLastMonth?.length + " last month"}</span>
                 </div>
 
-                <div className={clsx("w-10 h-10 rounded-full flex items-center justify-center text-white", bg)}>
-                    {icon}
+                <div className={clsx("w-10 h-10 rounded-full flex items-center justify-center overflow-hidden")}>
+                    <img src={imgSrc} alt={label} className="w-full h-full object-cover rounded-full"/>
                 </div>
+
             </div>
         )
     }
@@ -231,11 +228,10 @@ const Dashboard = () => {
     return <div className="h-full py-4">
         <div className="grid grid-cols-1 md:grid-cols-4 pb-4 gap-5">
             {
-                stats.map(({icon, bg, label, total}, index) => (
+                stats.map(({imgSrc, label, total}, index) => (
                     <Card
                         key={index}
-                        icon={icon}
-                        bg={bg}
+                        imgSrc={imgSrc}
                         label={label}
                         count={total}
                     />
@@ -245,7 +241,7 @@ const Dashboard = () => {
 
         <div className="w-full bg-white p-4 rounded shadow-sm">
             <h4 className="text-xl text-gray-600 font-semibold">Chart by priority</h4>
-            <Chart chartData={chartData} />
+            <Chart chartData={chartData}/>
         </div>
 
         <div className="w-full flex flex-col md:flex-row gap-4 2xl:gap-10 py-8">
@@ -255,7 +251,7 @@ const Dashboard = () => {
             <UserTable users={users}/>
         </div>
 
-        <ChatWidget />
+        <ChatWidget/>
     </div>;
 };
 
