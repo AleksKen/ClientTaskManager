@@ -3,7 +3,7 @@ import {Listbox, Transition} from "@headlessui/react";
 import {BsChevronExpand} from "react-icons/bs";
 import clsx from "clsx";
 import {MdCheck} from "react-icons/md";
-import {useGetLabelsQuery} from "../redux/slices/apiSlice.js";
+import {useGetLabelsQuery} from "../../redux/slices/apiSlice.js";
 
 const LabelList = ({taskLabels, setTaskLabels}) => {
     const [selectedLabels, setSelectedLabels] = useState([]);

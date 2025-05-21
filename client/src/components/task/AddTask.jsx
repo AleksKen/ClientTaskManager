@@ -4,18 +4,18 @@ import Textbox from "../Textbox.jsx";
 import {useForm} from "react-hook-form";
 import {useEffect, useState} from "react";
 import UserList from "../user/UserList.jsx";
-import SelectList from "../SelectList.jsx";
+import SelectList from "./SelectList.jsx";
 import {BiImages, BiX} from "react-icons/bi";
-import Button from "../Button.jsx";
+import Button from "../design/Button.jsx";
 import {
     useCreateNotificationMutation,
     useCreateTaskMutation,
     useUpdateTaskMutation
 } from "../../redux/slices/apiSlice.js";
-import LabelList from "../LabelList.jsx";
+import LabelList from "./LabelList.jsx";
 import {uploadImage} from "../../redux/actions/UploadImage.js";
 import {toast} from "sonner";
-import Loader from "../Loader.jsx";
+import Loader from "../design/Loader.jsx";
 
 const LISTS = ["TODO", "IN PROGRESS", "COMPLETED"];
 const PRIORITY = ["HIGH", "MEDIUM", "NORMAL", "LOW"];

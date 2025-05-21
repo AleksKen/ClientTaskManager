@@ -1,9 +1,9 @@
 import {useDispatch} from "react-redux";
-import {setOpenSidebar} from "../redux/slices/authSlice.js";
+import {setOpenSidebar} from "../../redux/slices/authSlice.js";
 import {MdOutlineSearch} from "react-icons/md";
-import UserAvatar from "./user/UserAvatar.jsx";
+import UserAvatar from "../user/UserAvatar.jsx";
 import NotificationPanel from "./NotificationPanel.jsx";
-import {setSearchQuery} from "../redux/slices/searchSlice.js";
+import {setSearchQuery} from "../../redux/slices/searchSlice.js";
 
 const Navbar = () => {
     const dispatch = useDispatch();

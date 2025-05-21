@@ -2,7 +2,7 @@ import {MdDashboard, MdOutlinePendingActions, MdTaskAlt} from "react-icons/md";
 import {FaTasks, FaUsers} from "react-icons/fa";
 import {useDispatch, useSelector} from "react-redux";
 import {Link, useLocation} from "react-router-dom";
-import {setOpenSidebar} from "../redux/slices/authSlice.js";
+import {setOpenSidebar} from "../../redux/slices/authSlice.js";
 import clsx from "clsx";
 import {CgPen} from "react-icons/cg";
 import {HiOutlineRocketLaunch} from "react-icons/hi2";

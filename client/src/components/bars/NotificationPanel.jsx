@@ -10,7 +10,7 @@ import {
     useDeleteNotificationMutation,
     useGetNotificationsQuery,
     useUpdateNotificationMutation
-} from "../redux/slices/apiSlice.js";
+} from "../../redux/slices/apiSlice.js";
 
 
 const ICONS = {

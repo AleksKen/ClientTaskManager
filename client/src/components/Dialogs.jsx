@@ -2,7 +2,7 @@ import ModalWrapper from "./ModalWrapper.jsx";
 import {Dialog} from "@headlessui/react";
 import clsx from "clsx";
 import {FaQuestion} from "react-icons/fa";
-import Button from "./Button.jsx";
+import Button from "./design/Button.jsx";
 
 export const ConfirmationDialog = ({
                                 open,

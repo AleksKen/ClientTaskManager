@@ -3,7 +3,7 @@ import {MdAdminPanelSettings, MdKeyboardArrowDown, MdKeyboardArrowUp, MdKeyboard
 import {LuClipboardPenLine} from "react-icons/lu";
 import {FaArrowsToDot} from "react-icons/fa6";
 import clsx from "clsx";
-import Chart from "../components/Chart.jsx";
+import Chart from "../components/charts/Chart.jsx";
 import {BGS, PRIOTITYSTYELS, TASK_TYPE} from "../utils/consts.js";
 import UserInfo from "../components/user/UserInfo.jsx";
 import moment from "moment";

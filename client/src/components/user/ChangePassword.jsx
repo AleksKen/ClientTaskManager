@@ -1,7 +1,7 @@
 import {Button, Dialog} from "@headlessui/react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import Loader from "../Loader.jsx";
+import Loader from "../design/Loader.jsx";
 import ModalWrapper from "../ModalWrapper.jsx";
 import Textbox from "../Textbox.jsx";
 import {useUpdateUserMutation} from "../../redux/slices/apiSlice.js";

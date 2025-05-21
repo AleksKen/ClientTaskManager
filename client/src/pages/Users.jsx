@@ -1,5 +1,5 @@
 import {useState} from "react";
-import Title from "../components/Title.jsx";
+import Title from "../components/design/Title.jsx";
 import {Button} from "@headlessui/react";
 import {IoMdAdd} from "react-icons/io";
 import {getInitials} from "../utils/initials.js";

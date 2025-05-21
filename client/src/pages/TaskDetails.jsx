@@ -15,8 +15,8 @@ import {PRIOTITYSTYELS, TASK_TYPE} from "../utils/consts.js";
 import clsx from "clsx";
 import {getInitials} from "../utils/initials.js";
 import moment from "moment";
-import Loader from "../components/Loader.jsx";
-import Button from "../components/Button.jsx";
+import Loader from "../components/design/Loader.jsx";
+import Button from "../components/design/Button.jsx";
 import {useCreateActivityMutation, useGetTaskQuery} from "../redux/slices/apiSlice.js";
 
 const ICONS = {

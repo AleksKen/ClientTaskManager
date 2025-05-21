@@ -5,7 +5,7 @@ import moment from "moment";
 import {AiFillApi} from "react-icons/ai";
 import {getChartData} from "../utils/сhartData.js";
 import {useGetTasksQuery, useUpdateUserMutation} from "../redux/slices/apiSlice.js";
-import PieChart from "../components/PieChart.jsx";
+import PieChart from "../components/charts/PieChart.jsx";
 import {useState} from "react";
 import {uploadImage} from "../redux/actions/UploadImage.js";
 import {setUserInfo} from "../redux/slices/authSlice.js";

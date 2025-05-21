@@ -2,10 +2,10 @@ import {useEffect} from "react";
 import {useForm} from "react-hook-form";
 import {useNavigate} from "react-router-dom";
 import Textbox from "../components/Textbox.jsx";
-import Button from "../components/Button.jsx";
+import Button from "../components/design/Button.jsx";
 import {useDispatch, useSelector} from "react-redux";
 import {login} from "../redux/actions/UserAction.js";
-import ParticlesBackground from "../components/ParticlesBackground.jsx";
+import ParticlesBackground from "../components/design/ParticlesBackground.jsx";
 
 const Login = () => {
     const dispatch = useDispatch();
